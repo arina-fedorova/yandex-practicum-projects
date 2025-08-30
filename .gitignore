@@ -186,11 +186,6 @@ Thumbs.db
 *.log
 logs/
 
-# Reports
-reports/
-*.html
-*.pdf
-
 # Model artifacts
 models/
 checkpoints/
@@ -201,7 +196,3 @@ data/
 datasets/
 raw_data/
 processed_data/
-
-# Jupyter outputs
-*.ipynb
-!template.ipynb
