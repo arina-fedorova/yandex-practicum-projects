@@ -37,9 +37,9 @@ This project analyzes user behavior patterns on Yandex Music platform across Rus
 ```
 1_music_of_big_cities/
 ├── README.md
-├── music_analysis_enhanced.ipynb
+├── music_of_big_cities.ipynb
 └── reports/
-    ├── music_analysis_enhanced.md
+    ├── music_of_big_cities.md
     └── images/
 ```
 
