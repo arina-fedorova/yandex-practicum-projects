@@ -1,43 +1,190 @@
 # How We Tried to Help a Farmer Buy Better Cows
+## Business Intelligence Report
 
-## The Problem
+**Author:** Arina Fedorova
+**Data Source:** Dairy Farm Records
+**Analysis:** 634 cows with production and quality data
 
-A dairy farmer came to us with a simple question: "I'm about to buy 20 new cows. How do I know which ones will actually be worth the money?"
+---
 
-Fair question. Buying a cow is a gamble. The seller shows you a healthy animal, quotes some numbers, and you hope for the best. Six months later you find out the milk tastes off, or the yield is half of what you expected. By then, it's too late.
+## Executive Summary
 
-The farmer wanted something better than gut feeling. He had data on his current herd - 600+ cows with records on milk production, feed, breeding history, and taste ratings. Could we use that to predict how new cows would perform?
+A dairy farmer asked us to predict two things before buying new cows: how much milk they'll produce, and whether it'll taste good. We built two models. One worked, one didn't.
 
-## What We Set Out to Build
+The quality prediction model successfully identifies cows likely to produce tasty milk based on fat content, protein levels, and breed. The yield prediction model failed - the features we have don't capture what actually drives milk production.
 
-Two models, working together:
+### The Bottom Line
+- **Quality model**: Working, ready for use
+- **Yield model**: Needs better data
+- **Recommendation**: Use quality predictions now, assess yield manually
 
-1. **Yield prediction** - How much milk will this cow produce per year?
-2. **Quality prediction** - Will the milk taste good?
+---
 
-A cow passes the test only if she hits both targets: at least 6,000 kg annually AND tasty milk.
+## The Data
 
-## What Actually Happened
+We analyzed records from 634 cows in the farmer's current herd.
 
-**The quality model worked.** We found that milk taste depends heavily on fat content, protein levels, and breed. The model picks up on these patterns and can flag cows likely to produce bad-tasting milk before you buy them.
+| Dataset | Records | Purpose |
+|---------|---------|---------|
+| Main herd | 634 cows | Production and quality history |
+| Father data | 629 records | Breeding information |
+| Purchase candidates | 20 cows | New cows to evaluate |
 
-**The yield model didn't.** This was the frustrating part. We threw everything at it - breed, father's breed, feed composition, pasture type, age. The model learned the training data perfectly but failed completely on new cows. Negative R-squared on the test set, meaning you'd be better off just guessing the herd average.
+**Key Variables:**
+- Annual milk yield (kg)
+- Fat content (%)
+- Protein content (%)
+- Milk taste rating (tasty/not tasty)
+- Breed, pasture type, age, father's breed
 
-Why? Probably because the real drivers of milk yield aren't in the data we have. Genetics matter, but we only have breed names, not actual genetic markers. Feed matters, but we're missing seasonal variations. The father's breed is recorded, but not his actual milk production history.
+---
 
-## What the Farmer Can Do Now
+## What the Data Shows
 
-**Use the quality model.** Before buying any cow, run her numbers through the model. If it says the milk will taste bad - walk away. This alone saves money.
+### Milk Yield Distribution
 
-**Assess yield the old way.** Until we get better data, stick with what works: look at the breed, check the age, ask about feeding history. It's not perfect, but it's honest.
+![Yield Distribution](images/yield_distribution.png)
+*Figure 1: Left - yield distribution with 6,000 kg threshold. Right - yield by breed*
 
-**Start collecting better data.** Every cow you buy from now on - track her actual yield, month by month. In a year or two, we'll have enough information to build a yield model that actually works.
+The yield histogram tells us something important: most cows cluster around 6,000-6,500 kg annually, right at the target threshold. The red line marks 6,000 kg - the minimum acceptable yield.
 
-## The Honest Truth
+Some cows produce well above 7,000 kg. Others fall below 5,000 kg. The question is: can we predict which is which before buying?
 
-We delivered half of what we promised. The quality prediction is solid and ready to use. The yield prediction needs more work and better data before it's useful.
+The boxplot by breed shows some variation - certain breeds have higher medians - but the overlap is substantial. Breed alone doesn't guarantee high yield.
 
-That's not failure - that's how real projects go. You try something, see what works, and improve from there.
+### Milk Quality Patterns
+
+![Quality Analysis](images/quality_analysis.png)
+*Figure 2: Left - taste distribution by breed. Right - fat vs protein content by taste*
+
+Here's where things get interesting. The scatter plot shows clear separation: cows producing tasty milk cluster in one region of fat-protein space, while those producing bad-tasting milk cluster elsewhere.
+
+This is good news for modeling. If we can draw a line (or curve) through this space, we can predict taste before buying.
+
+The breed chart confirms that some breeds produce consistently tasty milk, while others are hit-or-miss. This gives us predictive power.
+
+---
+
+## The Models
+
+We built two models with very different outcomes.
+
+### Quality Prediction (Worked)
+
+**Approach:** Logistic Regression with features including fat content, protein content, breed, pasture type, and age.
+
+**Results:**
+| Metric | Value |
+|--------|-------|
+| Precision | 0.71 at threshold 0.75 |
+| Recall | Varies by threshold |
+| Class balance | 58% tasty, 42% not tasty |
+
+The model successfully separates tasty from not-tasty milk based on composition and breed. At higher confidence thresholds, we can be more certain about predictions - at the cost of missing some good cows.
+
+### Yield Prediction (Didn't Work)
+
+**Approach:** Gradient Boosting Regressor with features including breed, pasture type, feed composition, father's breed, and age.
+
+**Results:**
+| Model | R² (Train) | R² (Test) |
+|-------|------------|-----------|
+| Linear Regression | 0.11 | -0.56 |
+| Ridge Regression | 0.11 | -0.51 |
+| Gradient Boosting | 0.99 | -1.50 |
+
+Negative R² on test data means the model performs worse than just predicting the herd average. Gradient Boosting memorized the training data perfectly (R² = 0.99) but learned nothing generalizable.
+
+**Why it failed:**
+- The features we have (breed, feed, pasture) capture maybe 10% of yield variance
+- True yield drivers - genetics, individual health, seasonal factors - aren't in our data
+- The father's breed is recorded, but not his actual production history
+
+![Model Results](images/model_results.png)
+*Figure 3: Left - yield model scatter (poor fit). Right - quality model confusion matrix*
+
+The scatter plot on the left shows the yield model's failure: predictions don't track actual values. The confusion matrix on the right shows the quality model working - most predictions fall on the diagonal.
+
+---
+
+## What This Means for the Farmer
+
+### Use the Quality Model Now
+
+Before buying any cow:
+1. Get her fat content, protein content, and breed
+2. Run through the quality model
+3. If probability of "tasty" is below 0.5 - don't buy
+4. If above 0.7 - confident buy (for quality)
+
+This won't catch everything, but it will prevent the worst mistakes.
+
+### Assess Yield Manually
+
+Until we have better data, stick with traditional assessment:
+- **Breed reputation**: Some breeds consistently produce more
+- **Age**: Peak production is typically 3-5 years
+- **Father's history**: Ask for his daughters' production records
+- **Body condition**: Healthy cows produce more
+
+### Collect Better Data Going Forward
+
+Every cow purchased should be tracked:
+- Monthly yield measurements
+- Feed consumption
+- Health events
+- Breeding dates
+
+In 1-2 years, this data could enable a working yield model.
+
+---
+
+## Recommendations
+
+### Immediate Actions
+
+| Priority | Action | Impact |
+|----------|--------|--------|
+| High | Deploy quality screening | Prevent bad purchases |
+| Medium | Document yield manually | Build future dataset |
+| Low | Track father production | Improve genetics data |
+
+### Data Collection Strategy
+
+For every new cow:
+1. Record purchase price and seller's claims
+2. Track first-year yield monthly
+3. Compare predictions to reality
+4. Use mismatches to improve models
+
+### Future Model Improvements
+
+The yield model could work with:
+- Actual genetic markers (expensive but available)
+- Father's production history, not just breed
+- Seasonal adjustment factors
+- Individual health records
+
+Whether the improvement justifies the data collection cost depends on herd size and margins.
+
+---
+
+## The Honest Assessment
+
+We promised two models. We delivered one.
+
+The quality prediction works and can save money starting now. The yield prediction needs data we don't have - and getting that data takes time.
+
+This is normal. Real projects rarely deliver everything on the first try. What matters is knowing what works, what doesn't, and what to do next.
+
+---
+
+## Technical Notes
+
+- **Quality Model**: Logistic Regression with StandardScaler and OneHotEncoder
+- **Yield Model**: Gradient Boosting Regressor (needs improvement)
+- **Validation**: 25% holdout test set with stratification for classification
+- **Class Balance**: 58% tasty, 42% not tasty in original data
 
 ---
 

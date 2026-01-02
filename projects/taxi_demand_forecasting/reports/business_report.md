@@ -1,136 +1,175 @@
-# Business Report: Taxi Demand Forecasting System
+# Predicting Airport Taxi Demand: When Will Passengers Need Rides?
+## Business Intelligence Report
+
+**Author:** Arina Fedorova
+**Data Source:** Airport Taxi Order History
+**Analysis Period:** March - August 2018
+
+---
 
 ## Executive Summary
 
-We developed a predictive system that forecasts taxi demand at the airport one hour in advance. The system analyzes historical patterns and delivers accurate predictions that can help optimize driver allocation and reduce customer wait times.
+An airport taxi company asked a straightforward question: how many drivers should we have ready for the next hour? Too few, and passengers wait. Too many, and drivers sit idle burning fuel.
 
-**Bottom Line**: The model predicts demand with an average error of only 29 orders per hour, well within the acceptable margin for operational planning.
+We built a forecasting model that predicts hourly demand with RMSE of 28.87 orders - 40% better than the required threshold of 48. The model reveals clear patterns: midnight peaks from red-eye arrivals, Friday rushes from business travelers heading home, and a summer trend that pushes August demand 40% above March levels.
 
----
-
-## The Business Problem
-
-Airport taxi services face a persistent challenge: too many drivers during slow periods means wasted resources, while too few during rush hours means frustrated customers and lost revenue. The company needed a data-driven approach to answer one critical question:
-
-> "How many taxi orders should we expect in the next hour?"
-
----
-
-## What We Discovered
-
-### When Customers Need Rides Most
-
-Our analysis of six months of data (March through August 2018) revealed clear patterns in passenger behavior:
-
-**The Midnight Rush**
-- Peak demand occurs at midnight, averaging 144 orders per hour
-- Late-night flight arrivals and red-eye passengers drive this unexpected peak
-- This is 5-6 times higher than the early morning lull
-
-**The Early Morning Quiet**
-- Lowest activity at 6 AM with only 25 orders per hour on average
-- Even airports sleep, briefly, during these hours
-
-**The Weekly Rhythm**
-- Friday is the busiest day (91 orders/hour average)
-- Tuesday is the slowest (77 orders/hour average)
-- The pattern reflects business travel: departures Monday, returns Friday
-
-**Summer Growth**
-- Demand increased approximately 40% from March to August
-- Summer travel season significantly impacts baseline demand
+### Key Numbers
+- **Model Accuracy**: RMSE 28.87 (target was ≤48)
+- **Peak Hour**: Midnight, averaging 144 orders
+- **Dead Zone**: 5-6 AM, averaging 25 orders
+- **Busiest Day**: Friday
+- **Summer Surge**: +40% demand from March to August
 
 ---
 
-## The Solution
+## The Data
 
-We built a machine learning model that learns from historical patterns to predict future demand. The model considers:
+Six months of taxi orders, recorded every 10 minutes. We aggregated to hourly totals - predicting 10-minute windows would be noisy and operationally useless anyway.
 
-- **Time of day**: Capturing the daily rhythm of airport life
-- **Day of week**: Accounting for business travel patterns
-- **Recent trends**: Learning from the last few hours of activity
-- **Seasonal patterns**: Adjusting for longer-term demand shifts
-
-### Performance
-
-| Metric | Result | Target | Status |
-|--------|--------|--------|--------|
-| Prediction Error (RMSE) | 29 orders/hour | ≤48 orders/hour | Exceeded |
-| Improvement vs Target | 40% better | — | Excellent |
-
-For a typical hour expecting 100 orders, our predictions will be accurate within ±18-30 orders. This precision enables confident operational decisions.
+| Metric | Value |
+|--------|-------|
+| Records | 4,416 hours |
+| Period | March 1 - August 31, 2018 |
+| Average demand | 84 orders/hour |
+| Range | 0 - 462 orders/hour |
 
 ---
 
-## Business Recommendations
+## What the Patterns Tell Us
 
-### Immediate Actions
+### The Daily Rhythm
 
-**1. Staff Scheduling**
-- Increase driver availability from 10 PM to 2 AM for the midnight peak
-- Reduce staffing 3-6 AM when demand drops to minimal levels
-- Plan for higher Friday capacity and lighter Tuesday schedules
+![Demand Patterns](images/demand_patterns.png)
+*Figure 1: Four views of taxi demand - time series, distribution, hourly pattern, and weekly pattern*
 
-**2. Resource Positioning**
-- Pre-position vehicles 30-60 minutes before predicted peak hours
-- Use hourly forecasts to dynamically adjust the driver pool
+The hourly chart reveals something counterintuitive: midnight is the busiest hour. Not 8 AM when business travelers head to morning flights. Not 6 PM when evening flights land. Midnight.
 
-**3. Customer Communication**
-- During predicted high-demand periods, set realistic wait time expectations
-- Consider surge pricing during peak Friday evenings to balance supply and demand
+Why? Red-eye arrivals. International flights landing after long journeys. Passengers who've been in transit for 12+ hours and want nothing more than to collapse into a taxi and get to their hotel. They're tired, they're impatient, and they need rides immediately.
 
-### Strategic Opportunities
+The 5-6 AM dead zone makes sense too. It's the gap between late-night arrivals and early-morning departures. Even airports sleep, briefly.
 
-**Dynamic Pricing**
-- Implement demand-based pricing during predicted peak hours
-- Offer discounts during low-demand periods to stimulate activity
+### The Weekly Pattern
 
-**Partnership Planning**
-- Coordinate with airlines on flight schedules to anticipate demand spikes
-- Special arrangements for charter flights or large group arrivals
+Friday dominates. Business travelers who flew out Monday morning are heading home. Vacation travelers are starting weekend trips. Everyone converges on Friday afternoon and evening.
 
-**Capacity Planning**
-- Use weekly and monthly forecasts for fleet size decisions
-- Plan maintenance schedules during predictably slow periods
+Tuesday is the slowest day - business travelers are already at their destinations, leisure travelers are mid-trip.
 
----
+### The Seasonal Trend
 
-## Implementation Roadmap
+![Time Series Decomposition](images/time_series_decomposition.png)
+*Figure 2: Breaking down the signal - trend shows summer surge, seasonality shows daily cycle*
 
-### Phase 1: Pilot Deployment
-- Integrate the model with dispatch systems
-- Provide hourly forecasts to operations team
-- Monitor prediction accuracy in real-time
+The decomposition separates signal from noise:
 
-### Phase 2: Automation
-- Automatic driver notifications based on predicted demand
-- Dynamic scheduling recommendations
-- Alert system for unusual demand patterns
+**Trend**: A steady climb from ~70 orders/hour in March to ~100+ in August. Summer travel season in full effect. This 40% increase happens gradually, predictably.
 
-### Phase 3: Enhancement
-- Incorporate weather data for improved accuracy
-- Add flight schedule integration
-- Develop demand forecasts for specific terminal zones
+**Daily Seasonality**: The same 24-hour cycle repeating with mechanical regularity. The shape doesn't change - midnight peaks, 6 AM troughs, every single day.
+
+**What's Left**: Random noise. Events we can't predict - flight delays, weather disruptions, conventions. This is irreducible uncertainty.
 
 ---
 
-## Return on Investment
+## The Forecasting Model
 
-While exact figures depend on implementation, the forecasting system can deliver value through:
+We tested several approaches. Gradient Boosting won.
 
-- **Reduced idle time**: Fewer drivers waiting during slow periods
-- **Improved service**: Shorter customer wait times during peaks
-- **Better planning**: Data-driven decisions replace guesswork
-- **Customer satisfaction**: Reliable service builds loyalty
+![Model Performance](images/model_performance.png)
+*Figure 3: Model comparison and prediction quality*
+
+| Model | RMSE | Notes |
+|-------|------|-------|
+| Gradient Boosting | 28.87 | Best performer |
+| Random Forest | 30.50 | Close second |
+| Random Forest (tuned) | 30.48 | Tuning didn't help |
+
+The target was RMSE ≤ 48. We beat it by 40%.
+
+**What the model uses to predict:**
+- Hour of day (the daily cycle)
+- Day of week (the Friday effect)
+- Recent demand (lag features from past hours)
+- Rolling averages (short-term trends)
+
+The scatter plot shows predictions clustering around the diagonal line of perfect accuracy. The residual histogram centers on zero with no systematic bias.
+
+### A Cautionary Tale
+
+Linear Regression achieved RMSE of 0.00 - suspiciously perfect. Investigation revealed data leakage: our rolling mean features accidentally included the current hour's demand. The model wasn't predicting; it was cheating.
+
+Lesson learned: in time series, be paranoid about information from the future leaking into your features.
 
 ---
 
-## Technical Appendix
+## What This Means for Operations
 
-For technical stakeholders, the model uses Gradient Boosting regression trained on 4,400+ hours of historical data. The system processes 18 engineered features including temporal patterns, lag variables, and rolling statistics. Model retraining is recommended monthly to capture evolving patterns.
+### Driver Allocation
+
+**Midnight Rush (11 PM - 1 AM)**
+- Staff at 120-150% of average capacity
+- Pre-position vehicles at terminals
+- Expect tired, impatient passengers
+
+**Dead Zone (4-6 AM)**
+- Minimum staffing
+- Allow driver breaks
+- Don't waste resources
+
+**Friday Surge**
+- Plan for 20%+ above average
+- Start scaling up by 3 PM
+- Maintain elevated staffing through midnight
+
+### The Numbers That Matter
+
+For an average hour expecting 84 orders, the model predicts within ±29 orders (one RMSE). That means:
+- 95% of predictions fall within ±58 orders
+- Planning for the predicted demand ± 30 covers most scenarios
+
+### What the Model Can't Predict
+
+- Individual flight delays
+- Weather disruptions
+- Special events (conventions, concerts)
+- Holiday surges
+
+These require manual adjustment. The model handles normal operations; humans handle exceptions.
 
 ---
 
-*Report prepared by: Arina Fedorova, Data Scientist*
-*Analysis period: March - August 2018*
-*Model validation: 10% holdout test set*
+## Recommendations
+
+### Immediate Implementation
+
+1. **Deploy hourly forecasting** - Run predictions for the next 24 hours each morning
+2. **Staff to predictions** - Allocate drivers based on hourly forecasts, not gut feeling
+3. **Build buffers** - Keep 10-15% reserve capacity above predicted demand
+
+### Monitoring
+
+- Track actual vs. predicted daily
+- Flag hours where error exceeds 50 orders
+- Retrain monthly to capture seasonal drift
+
+### Future Improvements
+
+The model would benefit from:
+- Flight schedule data (know when planes land)
+- Weather forecasts (rain increases demand)
+- Event calendars (conventions = surge)
+
+Each could reduce RMSE by 5-10 orders. Whether that's worth the integration cost depends on operational margins.
+
+---
+
+## Technical Notes
+
+- **Model**: Gradient Boosting Regressor (100 estimators, learning rate 0.1)
+- **Features**: 18 engineered from timestamps (temporal, cyclical, lag, rolling)
+- **Validation**: Chronological split (90% train, 10% test)
+- **Stationarity**: Confirmed via ADF test (p = 0.029)
+
+The time series is stationary, meaning patterns learned from March-July generalize to August. This is the foundation that makes forecasting possible.
+
+---
+
+*Arina Fedorova*
