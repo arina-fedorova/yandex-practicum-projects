@@ -100,10 +100,7 @@ Negative R² on test data means the model performs worse than just predicting th
 - True yield drivers - genetics, individual health, seasonal factors - aren't in our data
 - The father's breed is recorded, but not his actual production history
 
-![Model Results](images/model_results.png)
-*Figure 3: Left - yield model scatter (poor fit). Right - quality model confusion matrix*
-
-The scatter plot on the left shows the yield model's failure: predictions don't track actual values. The confusion matrix on the right shows the quality model working - most predictions fall on the diagonal.
+The yield model's predictions don't track actual values - a clear sign of failure. The quality model performs better, correctly classifying most samples.
 
 ---
 
