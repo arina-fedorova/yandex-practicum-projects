@@ -195,6 +195,7 @@ logs/
 models/
 checkpoints/
 artifacts/
+catboost_info/
 
 # Data directories
 data/
