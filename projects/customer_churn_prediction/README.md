@@ -1,95 +1,83 @@
-# Customer Churn Prediction (Classification, Segmentation)
+# Customer Churn Prediction
 
-> Predicting customer activity decline and developing personalized retention strategies for an e-commerce platform.
+Predicting customer activity decline for an e-commerce store using machine learning and customer segmentation.
 
 ## Quick Results
 
-| Metric | Value | Baseline |
-|--------|-------|----------|
-| F1 Score (Test) | 0.906 | 0.475 |
-| F1 Score (CV) | 0.881 | — |
-| Improvement | +91% | vs DummyClassifier |
-| Segments | 3 | K-Means clustering |
+| Metric | Value |
+|--------|-------|
+| Best Model | SVC (Support Vector Classifier) |
+| F1 Score | 0.91 (weighted) |
+| Baseline F1 | 0.48 |
+| Improvement | **90% over baseline** |
+| Customer Segments | 3 (via K-Means) |
 
 ## Problem Statement
 
-An online store experienced declining purchase activity among regular customers. The business needed to identify customers at risk of reducing their activity and develop targeted retention strategies before losing them.
+An e-commerce store noticed declining purchase activity among regular customers. The business needed:
+1. A model to predict which customers are likely to reduce activity in the next 3 months
+2. Customer segmentation for targeted retention campaigns
+3. Actionable insights for personalized marketing
 
 ## Solution
 
-Built a classification model using SVC (Support Vector Classifier) that predicts customer activity decline with 90.6% F1 score. Combined with K-Means segmentation and SHAP analysis to create actionable, personalized recommendations for each customer segment.
+### Prediction Model
+- Tested 4 classifiers: KNN, Decision Tree, Logistic Regression, **SVC**
+- SVC achieved F1 = 0.91 on test data (90% better than random baseline)
+- SHAP analysis identified top predictors:
+  - Pages viewed per session
+  - Time spent on site
+  - Marketing communication frequency
 
-## Key Findings
-
-- SVC outperformed Decision Tree, KNN, and Logistic Regression
-- Average session pages and marketing engagement are top predictors of churn
-- Three distinct customer segments identified with different intervention needs
-- 35-42% of customers in each segment show declining activity
-
-## Tech Stack
-
-`Python` `Pandas` `Scikit-learn` `SHAP` `Matplotlib` `Seaborn`
-
-## Quick Start
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run analysis
-jupyter notebook customer_churn_prediction.ipynb
-```
+### Customer Segmentation
+- K-Means clustering identified 3 distinct segments
+- Segment 0 (premium, long-term): 42% churn risk - **high priority**
+- Segment 1 (standard, mid-term): 34% churn risk - medium priority
+- Segment 2 (mixed, shorter-term): 39% churn risk - medium priority
 
 ## Project Structure
 
 ```
 customer_churn_prediction/
-├── README.md                           # This file
-├── requirements.txt                    # Project dependencies
-├── customer_churn_prediction.ipynb    # Main analysis notebook
+├── Customer_Churn_Prediction.ipynb  # Main analysis
+├── README.md
+├── requirements.txt
 └── reports/
-    └── business_report.md             # Business recommendations
+    ├── business_report.md
+    └── images/
+        ├── marketing_by_activity.png
+        ├── pages_by_activity.png
+        ├── service_type_distribution.png
+        ├── category_churn.png
+        ├── correlation_matrix.png
+        ├── shap_importance.png
+        └── segment_activity.png
 ```
 
-## Methodology
+## Tech Stack
 
-### Data
+- **Python 3.8+**
+- **pandas, numpy** - data manipulation
+- **scikit-learn** - ML models and pipelines
+- **matplotlib, seaborn** - visualization
+- **SHAP** - model interpretability
+- **phik** - correlation analysis
 
-| Aspect | Description |
-|--------|-------------|
-| Source | E-commerce customer behavior data |
-| Size | 4 datasets merged into single view |
-| Features | Behavioral, transactional, engagement metrics |
-| Target | buying_activity (binary: normal/declining) |
+## Key Findings
 
-### Approach
+1. **Engagement metrics matter most**: Pages viewed and time on site are top predictors
+2. **Premium users churn more**: 50% of premium subscribers show declining activity
+3. **Promotions signal risk**: Heavy promo shoppers tend to have lower loyalty
+4. **Cart abandonment**: Higher in declining customers
 
-1. **Data Integration** — Merge customer, revenue, time, and profit data
-2. **EDA** — Analyze distributions, correlations, activity patterns
-3. **Feature Engineering** — Handle multicollinearity, encode categoricals
-4. **Model Selection** — Compare KNN, Decision Tree, Logistic Regression, SVC
-5. **Interpretation** — SHAP values for feature importance
-6. **Segmentation** — K-Means clustering for targeted strategies
+## Business Recommendations
 
-### Models Compared
-
-| Model | F1 Score | Notes |
-|-------|----------|-------|
-| DummyClassifier | 0.475 | Baseline |
-| SVC | 0.906 | **Best performer** |
-
-## Customer Segments
-
-| Segment | Size | Declining Activity | Profile |
-|---------|------|-------------------|---------|
-| 0 | 497 | 42% | Moderate engagement |
-| 1 | 540 | 35% | High engagement |
-| 2 | 547 | 40% | Mixed engagement |
+| Segment | Strategy |
+|---------|----------|
+| Premium at-risk | Loyalty programs, exclusive offers |
+| Standard declining | Re-engagement email campaigns |
+| Engaged stable | Maintain current approach, upsell |
 
 ## Author
 
-**Arina Fedorova** — Data Scientist
-
----
-
-*Educational project | Yandex Practicum Data Science Program*
+**Arina Fedorova** - [GitHub](https://github.com/ArinaKorshunova)

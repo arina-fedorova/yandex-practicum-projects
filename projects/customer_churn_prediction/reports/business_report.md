@@ -1,74 +1,153 @@
-# Why Customers Stop Buying (And How to Catch Them Before They Do)
+# Customer Retention: Predicting and Preventing Churn
+## Business Intelligence Report
 
-## The Starting Point
+**Author:** Arina Fedorova
+**Client:** E-commerce Store
+**Data:** 1,300 customers with behavioral, transactional, and communication data
 
-An online store came with a familiar problem: customers were slipping away. Not dramatically - they weren't complaining or making a scene. They just... bought less. Visited less often. Responded to fewer emails. And eventually, they disappeared.
+---
 
-The question wasn't complicated: can we spot these customers before they're gone?
+## Executive Summary
 
-## What the Data Showed
+An e-commerce store faced declining purchase activity among regular customers. We built a machine learning system that:
 
-We had four years of customer behavior data. Page views, purchases, time on site, email responses - the usual. About 1,300 customers, enough to work with.
+1. **Predicts churn** with 91% accuracy (F1 score)
+2. **Segments customers** into 3 actionable groups
+3. **Identifies key drivers** of customer activity decline
 
-The first thing we noticed: roughly 38% of customers were already showing signs of decline. That's not a small leak. That's a problem.
+### Key Numbers
 
-But here's what was interesting. These customers didn't look different from loyal ones when they first signed up. Same demographics, same initial behavior. The difference showed up in how they engaged over time.
+| Metric | Value |
+|--------|-------|
+| Prediction Accuracy (F1) | 91% |
+| Improvement over Baseline | 90% |
+| High-Risk Segment | 42% of premium users |
+| Top Predictor | Pages viewed per session |
 
-![Feature Distributions](images/feature_distributions.png)
-*Figure 1: Key behavioral differences between active and declining customers*
+---
 
-**The warning signs:**
+## The Business Problem
 
-1. **Fewer pages per visit.** This was the biggest tell. Customers who used to browse 10-15 pages per session started looking at 3-4. They came, grabbed what they needed, and left. No exploring, no discovering new products.
+The store noticed:
+- Regular customers reducing purchase frequency
+- Revenue concentration shifting to new customers
+- Marketing campaigns showing inconsistent results
 
-2. **Ignoring marketing emails.** Open rates dropped. Click-through rates dropped further. The relationship was going cold.
+**Goal:** Identify at-risk customers BEFORE they churn, enabling proactive retention.
 
-3. **Longer gaps between visits.** Weekly shoppers became monthly shoppers. Monthly shoppers became "maybe next quarter" shoppers.
+---
 
-4. **Smaller carts.** Not necessarily less money per visit, but fewer items considered. Less time spent deciding.
+## What Predicts Customer Churn?
 
-## The Model
+### Top 5 Predictive Features (SHAP Analysis)
 
-We tested several approaches. Support Vector Classifier won - F1 score of 0.90 on held-out data, which means it catches most at-risk customers without flagging too many false positives.
+![SHAP Importance](images/shap_importance.png)
 
-The model looks at engagement patterns, purchase history, and response to marketing. It outputs a risk score. High score means this customer is heading for the exit.
+1. **Pages per Session** — Most important predictor. Declining page views signal disengagement.
+2. **Time on Site** — Both recent and historical time spent matters.
+3. **Marketing Response** — Communication frequency correlates with retention.
+4. **Promo Purchases** — Heavy promo reliance indicates price sensitivity.
+5. **Cart Abandonment** — Higher abandonment rates in churning customers.
 
-## Three Types of At-Risk Customers
+### Key Insights
 
-Clustering revealed something useful: not all declining customers are the same.
+![Pages by Activity](images/pages_by_activity.png)
+*Figure: Stable customers view 2x more pages per session than declining customers*
 
-**Group 1: The Burned Out**
-These were once your best customers. High engagement, frequent purchases. Now they're tired. Maybe too many emails. Maybe they bought everything they needed. They're not angry - just done.
+- **Engagement drops first**: Behavioral signals appear before purchase decline
+- **Premium users at risk**: 50% show declining activity despite higher service tier
+- **Category matters**: "Children's products" has highest churn volume
 
-*What works:* Give them space. Reduce email frequency. When you do reach out, make it count - exclusive access, early previews, something that says "we remember you're special."
+---
 
-**Group 2: The Price Shoppers**
-They came for deals and stayed for deals. When the deals dried up, so did their interest. Moderate engagement, highly sensitive to price.
+## Customer Segmentation
 
-*What works:* Loyalty discounts. Bundle offers. Free shipping thresholds that feel achievable. Don't try to make them love your brand - just make the math work.
+We identified 3 distinct customer segments using K-Means clustering:
 
-**Group 3: The Almost-Buyers**
-High browsing, low conversion. They look, they compare, they leave. Cart abandonment is their specialty.
+![Segment Activity](images/segment_activity.png)
 
-*What works:* Simplify checkout. Send abandoned cart reminders (but don't be creepy about it). Time-limited discounts on items they viewed.
+| Segment | Size | Churn Rate | Profile |
+|---------|------|------------|---------|
+| **0** | 497 | 42% | Premium, long-tenure, high-value |
+| **1** | 480 | 34% | Standard, mid-tenure |
+| **2** | 319 | 39% | Mixed, shorter-tenure |
 
-## What To Do With This
+### Segment 0: Premium At-Risk (Highest Priority)
+- Longest customer relationships (avg 800 days)
+- Premium service tier
+- **42% showing activity decline**
+- Strategy: Exclusive loyalty rewards, personal outreach
 
-**Short term:**
-- Run the model weekly. Flag customers with risk scores above threshold.
-- Match flagged customers to their segment. Send the right message to the right group.
-- Track who comes back. Learn what works.
+### Segment 1: Standard Declining (Medium Priority)
+- Mid-tenure customers (avg 400 days)
+- Standard service tier
+- 35% declining
+- Strategy: Re-engagement campaigns, upgrade offers
 
-**Longer term:**
-- Fix the page views problem. If customers aren't exploring, maybe the site isn't inviting exploration. That's a UX issue, not a marketing issue.
-- Rethink email frequency. More isn't better. Relevant is better.
-- Build in feedback loops. The model will drift as customer behavior changes. Retrain it.
+### Segment 2: Mixed Profile (Medium Priority)
+- Smaller segment, mixed characteristics
+- 39% declining — needs attention
+- Strategy: Targeted re-engagement, segment-specific offers
 
-## The Honest Assessment
+---
 
-This model catches patterns, not causes. It can tell you who's leaving, but not always why. A customer might be flagged as high-risk because they got a new job and have less time to browse - no amount of marketing will change that.
+## Model Performance
 
-Use the predictions as a starting point, not a verdict. The segments are guides, not scripts. Test what works with your actual customers.
+We tested 4 classification algorithms:
+
+| Model | F1 Score | Notes |
+|-------|----------|-------|
+| **SVC** | 0.91 | Best performer |
+| Logistic Regression | 0.85 | Good baseline |
+| Decision Tree | 0.82 | Most interpretable |
+| KNN | 0.80 | Slowest |
+| Baseline (DummyClassifier) | 0.48 | Random guessing |
+
+**SVC (Support Vector Classifier)** achieved 91% F1 score — nearly double the baseline.
+
+---
+
+## Business Recommendations
+
+### Immediate Actions
+
+1. **Deploy Prediction Model**
+   - Score all customers monthly
+   - Flag those with >60% churn probability
+
+2. **Prioritize Segment 0**
+   - Premium users generate most revenue
+   - 42% at risk = significant revenue exposure
+   - Personal outreach from account managers
+
+3. **Monitor Page Views**
+   - Top predictor of churn
+   - Alert when customer's pages/session drops 30%+
+
+### Retention Strategies by Segment
+
+| Segment | Strategy | Expected Impact |
+|---------|----------|-----------------|
+| Premium At-Risk | Exclusive loyalty club, early access | -15% churn |
+| Standard Declining | Email re-engagement, 10% comeback offer | -10% churn |
+| Engaged Stable | Cross-sell premium, referral rewards | +5% revenue |
+
+### Future Improvements
+
+1. **Real-time scoring**: Integrate model into app for live alerts
+2. **A/B test interventions**: Measure which strategies work per segment
+3. **Add recency features**: Days since last purchase, visit frequency trends
+
+---
+
+## Technical Notes
+
+- **Algorithm**: SVC with RBF kernel
+- **Features**: 15 behavioral + transactional + communication features
+- **Preprocessing**: StandardScaler for numerical, OneHotEncoder for categorical
+- **Validation**: 80/20 train/test split with stratification
+- **Metric**: F1 weighted (handles class imbalance)
+- **Interpretability**: SHAP values for feature importance
 
 ---
 
