@@ -14,6 +14,9 @@ The first thing we noticed: roughly 38% of customers were already showing signs 
 
 But here's what was interesting. These customers didn't look different from loyal ones when they first signed up. Same demographics, same initial behavior. The difference showed up in how they engaged over time.
 
+![Feature Distributions](images/feature_distributions.png)
+*Figure 1: Key behavioral differences between active and declining customers*
+
 **The warning signs:**
 
 1. **Fewer pages per visit.** This was the biggest tell. Customers who used to browse 10-15 pages per session started looking at 3-4. They came, grabbed what they needed, and left. No exploring, no discovering new products.
@@ -26,7 +29,7 @@ But here's what was interesting. These customers didn't look different from loya
 
 ## The Model
 
-We tested several approaches. Support Vector Classifier won - F1 score of 0.91 on held-out data, which means it catches most at-risk customers without flagging too many false positives.
+We tested several approaches. Support Vector Classifier won - F1 score of 0.90 on held-out data, which means it catches most at-risk customers without flagging too many false positives.
 
 The model looks at engagement patterns, purchase history, and response to marketing. It outputs a risk score. High score means this customer is heading for the exit.
 
