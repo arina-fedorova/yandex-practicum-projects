@@ -36,7 +36,7 @@ The first thing we noticed: toxic comments are rare. Only 10.16% of the dataset 
 
 ### Text Length Doesn't Help
 
-![Text Length Analysis](images/text_length.png)
+![Text Length Analysis](images/length_disribution.png)
 *Figure 2: Toxic and normal comments have similar length distributions*
 
 We hoped toxic comments might be shorter (angry outbursts) or longer (sustained attacks). They're not. Both classes show nearly identical length distributions.
