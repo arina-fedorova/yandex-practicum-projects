@@ -159,6 +159,11 @@ cython_debug/
 *.pb
 *.tflite
 *.mlmodel
+*.npy
+*.npz
+
+# Claude Code
+.claude/
 
 # Large files
 *.zip

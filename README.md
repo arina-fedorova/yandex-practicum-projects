@@ -1,14 +1,44 @@
-# 🚀 Yandex Practicum Data Science Projects
+# Yandex Practicum Data Science Projects
 
-A collection of data analysis projects implemented during the Data Science course at Yandex Practicum. The projects cover various real-world datasets and focus on exploratory data analysis, data cleaning, and reporting.
+A collection of data science projects completed during the Yandex Practicum Data Science program. Projects cover the full ML lifecycle: data exploration, preprocessing, modeling, and evaluation.
 
-## Projects Index
+## Featured Portfolio Projects
+
+| Project | Description | Key Skills | Results |
+|---------|-------------|------------|---------|
+| [Time Series Prediction](./projects/22_time_series_prediction) | Taxi demand forecasting | Time series, statsmodels, feature engineering | RMSE below target |
+| [Customer Behavior Analysis](./projects/18_customer_behavior_analysis) | Predicting customer activity decline | Classification, SHAP, segmentation | Actionable recommendations |
+| [Cow Selection ML](./projects/19_cow_selection_ml) | Baseline establishment for livestock | Regression + Classification, multi-objective | Dual-model system |
+| [Toxic Comments Processing](./projects/24_toxic_comments_processing) | NLP text classification | TF-IDF, NLP preprocessing, threshold optimization | F1: 0.778 |
+| [Machine Vision](./projects/29_machine_vision) | Multimodal image-text matching | ResNet50, BERT, ensemble methods | Production pipeline |
+
+## All Projects Index
 
 | # | Project Name | Description | Status | Technologies |
 |---|--------------|-------------|---------|--------------|
 | 01 | [Project Template](./projects/01_project_template) | Template for new projects | 🟡 Template | Python, Jupyter |
-| 02 | [Coming Soon...] | - | ⏳ Planned | - |
-| 03 | [Coming Soon...] | - | ⏳ Planned | - |
+| 01 | [Music of Big Cities](./projects/1_music_of_big_cities) | Yandex Music analysis | ✅ Completed | Python, Pandas, Matplotlib |
+| 02 | [Children and Loan](./projects/2_children_and_loan) | Loan reliability research | ✅ Completed | Python, Scikit-learn, Pandas |
+| 06 | [ML Farm](./projects/6_ml_farm) | Cow farm ML modeling | ✅ Completed | Python, ML, Scikit-learn |
+| 08 | [ML HR](./projects/8_ml_hr) | HR ML modeling | ✅ Completed | Python, ML, HR Analytics |
+| 09 | [Geo Bootstrap](./projects/9_geo_bootstrap) | Geographic bootstrap analysis | ✅ Completed | Python, Statistics, Bootstrap |
+| 10 | [ML OneClick](./projects/10_ml_oneclick) | One-click ML solution | ✅ Completed | Python, ML, Automation |
+| 11 | [Side Project: Accord](./projects/11_sideproject_accord) | Accord side project | ✅ Completed | Python, Side Project |
+| 12 | [Side Project: ExpressTrip](./projects/12_sideproject_expresstrip) | Express trip analysis | ✅ Completed | Python, Travel Analytics |
+| 13 | [Side Project: SeaTreats](./projects/13_sideproject_seatreats) | Sea treats analysis | ✅ Completed | Python, Food Analytics |
+| 14 | [Marketing Analysis](./projects/14_marketing_analysis) | Marketing campaign analysis | ✅ Completed | Python, Marketing Analytics |
+| 15 | [Russian Cinema Analysis](./projects/15_russian_cinema_analysis) | Russian cinema data research | ✅ Completed | Python, Cinema Analytics |
+| 16 | [Startup Success Prediction](./projects/16_startup_success_prediction) | Startup success ML model | ✅ Completed | Python, ML, Business Analytics |
+| 17 | [Housing Price Prediction](./projects/17_housing_price_prediction) | Housing price ML model | ✅ Completed | Python, ML, Real Estate |
+| 18 | [Customer Behavior Analysis](./projects/18_customer_behavior_analysis) | Customer behavior strategy | ✅ Completed | Python, Customer Analytics |
+| 19 | [Cow Selection ML](./projects/19_cow_selection_ml) | Cow selection ML modeling | ✅ Completed | Python, ML, Agriculture |
+| 20 | [Car Price Determination](./projects/20_car_price_determination) | Car price ML model | ✅ Completed | Python, ML, Automotive |
+| 21 | [Star Temperature Prediction](./projects/21_star_temperature_prediction) | Star temperature ML model | ✅ Completed | Python, ML, Astronomy |
+| 22 | [Time Series Prediction](./projects/22_time_series_prediction) | Time series forecasting | ✅ Completed | Python, ML, Time Series |
+| 23 | [Text Processing](./projects/23_text_processing) | Text analysis and processing | ✅ Completed | Python, NLP, Text Analytics |
+| 24 | [Toxic Comments Processing](./projects/24_toxic_comments_processing) | Toxic comments ML model | ✅ Completed | Python, ML, NLP, Moderation |
+| 25 | [Scooter Rental Analysis](./projects/25_scooter_rental_analysis) | Scooter rental statistics | ✅ Completed | Python, Statistics, Transportation |
+| 29 | [Machine Vision](./projects/29_machine_vision) | Multimodal image-text matching | ✅ Completed | Python, BERT, ResNet50, XGBoost |
 
 ## Repository Structure
 
@@ -17,18 +47,17 @@ yandex-practicum-projects/
 ├── README.md                    # This file - Project overview
 ├── projects/                    # Individual project directories
 │   ├── 01_project_template/    # Project template
-│   ├── 02_[project_name]/      # Future projects
-│   └── ...
+│   ├── 18_customer_behavior/   # Customer behavior analysis
+│   ├── 22_time_series/         # Time series forecasting
+│   └── ...                     # Other projects
+├── docs/                        # Documentation and planning
+│   └── PROJECT_IMPROVEMENT_PLAN.md
 ├── common/                      # Shared utilities and templates
 │   ├── utils/                  # Common utility functions
-│   │   ├── data_utils.py      # Data loading, saving, validation
-│   │   ├── viz_utils.py       # Visualization helpers
-│   │   └── ml_utils.py        # Machine learning utilities
 │   └── templates/              # Project templates
 ├── .github/workflows/          # CI/CD workflows
 ├── pyproject.toml              # Project configuration
-├── requirements.txt             # Python dependencies
-├── .pre-commit-config.yaml     # Pre-commit hooks
+├── requirements.txt            # Python dependencies
 ├── Makefile                    # Build automation
 └── .gitignore                  # Git ignore rules
 ```
@@ -248,9 +277,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Project Status
 
-- **Total Projects**: 1 (Template)
-- **Completed**: 0
+- **Total Projects**: 26
+- **Completed**: 25
 - **In Progress**: 0
-- **Planned**: 2+
+- **Template**: 1
+- **Featured Portfolio**: 5
 
-*Last updated: [Current Date]*
+*Last updated: January 2026*
