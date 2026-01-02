@@ -37,25 +37,26 @@ Transform ALL educational Data Science projects into a cohesive, professional po
 
 ### Format
 
-```
-project_name (Skill1, Skill2, Skill3)
-```
+| Location | Format | Example |
+|----------|--------|---------|
+| **Folder** | `snake_case` (no skills) | `taxi_demand_forecasting/` |
+| **README title** | Title Case + skills in parentheses | `# Taxi Demand Forecasting (Time Series, Forecasting)` |
 
 ### Rules
 
 1. **No numeric prefixes** — remove all `01_`, `22_`, etc.
-2. **Descriptive name** — reflects the business problem or domain
-3. **Skills in parentheses** — 2-4 key skills demonstrated
-4. **Snake_case** — for folder names
+2. **Descriptive folder name** — reflects the business problem or domain
+3. **Skills in README title** — 2-4 key skills in parentheses
+4. **Snake_case** — for folder names (no spaces, no special characters)
 5. **English only** — all names in English
 
 ### Examples
 
-| Before | After |
-|--------|-------|
-| `22_time_series_prediction` | `taxi_demand_forecasting (Time Series, Forecasting)` |
-| `24_toxic_comments_processing` | `toxic_comment_detection (NLP, Text Classification, BERT)` |
-| `29_machine_vision` | `multimodal_image_text_matching (Computer Vision, BERT, Ensemble)` |
+| Current Folder | New Folder | README Title |
+|----------------|------------|--------------|
+| `22_time_series_prediction` | `taxi_demand_forecasting` | `# Taxi Demand Forecasting (Time Series, Forecasting)` |
+| `24_toxic_comments_processing` | `toxic_comment_detection` | `# Toxic Comment Detection (NLP, Text Classification, BERT)` |
+| `29_machine_vision` | `multimodal_image_text_matching` | `# Multimodal Image-Text Matching (Computer Vision, BERT, Ensemble)` |
 
 ---
 
@@ -63,32 +64,32 @@ project_name (Skill1, Skill2, Skill3)
 
 ### All Projects Mapping
 
-| # | Current Name | New Folder Name | Skills Tag |
-|---|--------------|-----------------|------------|
-| 1 | `01_project_template` | `project_template` | (Template) |
-| 2 | `1_music_of_big_cities` | `music_preference_analysis` | (EDA, Statistical Testing) |
-| 3 | `2_borrower_reliability` | `credit_risk_analysis` | (Statistical Testing, Risk Modeling) |
+| # | Current Folder | New Folder | README Title (with skills) |
+|---|----------------|------------|----------------------------|
+| 1 | `01_project_template` | `project_template` | Project Template (Template) |
+| 2 | `1_music_of_big_cities` | `music_preference_analysis` | Music Preference Analysis (EDA, Statistical Testing) |
+| 3 | `2_borrower_reliability` | `credit_risk_analysis` | Credit Risk Analysis (Statistical Testing, Risk Modeling) |
 | 4 | `2_children_and_loan` | **DELETE** - duplicate | N/A |
-| 5 | `3_russian_cinema_analysis` | `russian_cinema_market` | (EDA, Financial Analysis) |
-| 6 | `6_ml_farm` | `dairy_herd_optimization` | (Regression, Classification) |
-| 7 | `8_ml_hr` | `hr_employee_analytics` | (Classification, HR Analytics) |
-| 8 | `9_geo_bootstrap` | `oil_well_location_selection` | (Regression, Bootstrap, Risk Analysis) |
-| 9 | `10_ml_oneclick` | `automated_ml_pipeline` | (AutoML, Pipeline) |
-| 10 | `11_sideproject_accord` | `music_genre_classification` | (Classification, Audio Features) |
-| 11 | `12_sideproject_expresstrip` | `trip_prediction_trees` | (Decision Trees, Classification) |
-| 12 | `13_sideproject_seatreats` | `order_cancellation_prediction` | (Classification, SVM) |
-| 13 | `14_marketing_analysis` | `marketing_campaign_forecasting` | (Forecasting, Segmentation) |
+| 5 | `3_russian_cinema_analysis` | `russian_cinema_market` | Russian Cinema Market (EDA, Financial Analysis) |
+| 6 | `6_ml_farm` | `dairy_herd_optimization` | Dairy Herd Optimization (Regression, Classification) |
+| 7 | `8_ml_hr` | `hr_employee_analytics` | HR Employee Analytics (Classification, HR Analytics) |
+| 8 | `9_geo_bootstrap` | `oil_well_location_selection` | Oil Well Location Selection (Regression, Bootstrap, Risk Analysis) |
+| 9 | `10_ml_oneclick` | `automated_ml_pipeline` | Automated ML Pipeline (AutoML, Pipeline) |
+| 10 | `11_sideproject_accord` | `music_genre_classification` | Music Genre Classification (Classification, Audio Features) |
+| 11 | `12_sideproject_expresstrip` | `trip_prediction_trees` | Trip Prediction Trees (Decision Trees, Classification) |
+| 12 | `13_sideproject_seatreats` | `order_cancellation_prediction` | Order Cancellation Prediction (Classification, SVM) |
+| 13 | `14_marketing_analysis` | `marketing_campaign_forecasting` | Marketing Campaign Forecasting (Forecasting, Segmentation) |
 | 14 | `16_startup_success_prediction` | **REVIEW** - check if empty | TBD |
 | 15 | `17_housing_price_prediction` | **REVIEW** - check if empty | TBD |
-| 16 | `18_customer_behavior_analysis` | `customer_churn_prediction` | (Classification, SHAP, Segmentation) |
-| 17 | `19_cow_selection_ml` | `baseline_establishment_ml` | (Regression, Classification, Multi-objective) |
-| 18 | `20_car_price_determination` | `car_price_prediction` | (Regression, Gradient Boosting) |
+| 16 | `18_customer_behavior_analysis` | `customer_churn_prediction` | Customer Churn Prediction (Classification, SHAP, Segmentation) |
+| 17 | `19_cow_selection_ml` | `baseline_establishment_ml` | Baseline Establishment ML (Regression, Classification, Multi-objective) |
+| 18 | `20_car_price_determination` | `car_price_prediction` | Car Price Prediction (Regression, Gradient Boosting) |
 | 19 | `21_star_temperature_prediction` | **REVIEW** - check if template only | TBD |
-| 20 | `22_time_series_prediction` | `taxi_demand_forecasting` | (Time Series, Forecasting) |
-| 21 | `23_text_processing` | `text_sentiment_classification` | (NLP, Text Classification) |
-| 22 | `24_toxic_comments_processing` | `toxic_comment_detection` | (NLP, BERT, Text Classification) |
-| 23 | `25_scooter_rental_analysis` | `scooter_rental_analytics` | (EDA, Statistical Testing) |
-| 24 | `29_machine_vision` | `multimodal_image_text_matching` | (Computer Vision, BERT, Ensemble) |
+| 20 | `22_time_series_prediction` | `taxi_demand_forecasting` | Taxi Demand Forecasting (Time Series, Forecasting) |
+| 21 | `23_text_processing` | `text_sentiment_classification` | Text Sentiment Classification (NLP, Text Classification) |
+| 22 | `24_toxic_comments_processing` | `toxic_comment_detection` | Toxic Comment Detection (NLP, BERT, Text Classification) |
+| 23 | `25_scooter_rental_analysis` | `scooter_rental_analytics` | Scooter Rental Analytics (EDA, Statistical Testing) |
+| 24 | `29_machine_vision` | `multimodal_image_text_matching` | Multimodal Image-Text Matching (Computer Vision, BERT, Ensemble) |
 
 ### Projects to Delete/Review
 
@@ -253,7 +254,7 @@ jupyter notebook notebooks/analysis.ipynb
 | Rename folder | HIGH | `1_music_of_big_cities` → `music_preference_analysis` |
 | Create README (EN) | HIGH | Yandex Music user behavior analysis |
 | Add requirements.txt | HIGH | pandas, matplotlib, scipy |
-| Rename notebook | MEDIUM | Add skills to filename |
+| Rename notebook | MEDIUM | Descriptive name (e.g., `analysis.ipynb`) |
 | Create folder structure | MEDIUM | notebooks/, data/, reports/ |
 
 **Key Metrics to Document:**
