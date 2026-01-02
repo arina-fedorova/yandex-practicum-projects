@@ -1,178 +1,44 @@
-# Business Report: Data-Driven Livestock Selection System
+# How We Tried to Help a Farmer Buy Better Cows
 
-## Executive Summary
+## The Problem
 
-We developed a predictive system that helps dairy farmers make objective purchasing decisions when selecting new cows. The system predicts both milk quantity (annual yield) and quality (taste), reducing the risk of purchasing underperforming animals.
+A dairy farmer came to us with a simple question: "I'm about to buy 20 new cows. How do I know which ones will actually be worth the money?"
 
-**Bottom Line**: The model identifies cows likely to produce at least 6,000 kg of tasty milk annually, with 83% accuracy on yield predictions and 92% precision on quality predictions.
+Fair question. Buying a cow is a gamble. The seller shows you a healthy animal, quotes some numbers, and you hope for the best. Six months later you find out the milk tastes off, or the yield is half of what you expected. By then, it's too late.
 
----
+The farmer wanted something better than gut feeling. He had data on his current herd - 600+ cows with records on milk production, feed, breeding history, and taste ratings. Could we use that to predict how new cows would perform?
 
-## The Business Problem
+## What We Set Out to Build
 
-Purchasing dairy cows is a significant investment with inherent risks. Farmers traditionally rely on subjective assessments and seller claims, leading to:
+Two models, working together:
 
-- Cows that underperform expectations
-- Milk quality issues discovered too late
-- Wasted resources on poor selections
+1. **Yield prediction** - How much milk will this cow produce per year?
+2. **Quality prediction** - Will the milk taste good?
 
-The farm needed an objective, data-driven approach to answer:
+A cow passes the test only if she hits both targets: at least 6,000 kg annually AND tasty milk.
 
-> "Which cows will meet our production standards?"
+## What Actually Happened
 
----
+**The quality model worked.** We found that milk taste depends heavily on fat content, protein levels, and breed. The model picks up on these patterns and can flag cows likely to produce bad-tasting milk before you buy them.
 
-## What We Discovered
+**The yield model didn't.** This was the frustrating part. We threw everything at it - breed, father's breed, feed composition, pasture type, age. The model learned the training data perfectly but failed completely on new cows. Negative R-squared on the test set, meaning you'd be better off just guessing the herd average.
 
-### Factors That Predict High Yield
+Why? Probably because the real drivers of milk yield aren't in the data we have. Genetics matter, but we only have breed names, not actual genetic markers. Feed matters, but we're missing seasonal variations. The father's breed is recorded, but not his actual milk production history.
 
-Our analysis of the existing herd revealed the key drivers of milk production:
+## What the Farmer Can Do Now
 
-**Breeding Matters**
-- Certain cow breeds consistently outperform others
-- Father's breed is a strong predictor of offspring performance
-- Selective breeding history indicates genetic potential
+**Use the quality model.** Before buying any cow, run her numbers through the model. If it says the milk will taste bad - walk away. This alone saves money.
 
-**Nutrition Is Critical**
-- Feed energy content (EKE) directly correlates with yield
-- Protein levels in feed impact production
-- Sugar-to-protein ratio affects milk composition
+**Assess yield the old way.** Until we get better data, stick with what works: look at the breed, check the age, ask about feeding history. It's not perfect, but it's honest.
 
-**Environment Plays a Role**
-- Pasture type influences both quantity and quality
-- Lowland pastures tend to produce higher yields
-- Grazing conditions affect milk characteristics
+**Start collecting better data.** Every cow you buy from now on - track her actual yield, month by month. In a year or two, we'll have enough information to build a yield model that actually works.
 
-### Quality Prediction Insights
+## The Honest Truth
 
-Predicting "tasty" milk is more challenging than predicting quantity:
+We delivered half of what we promised. The quality prediction is solid and ready to use. The yield prediction needs more work and better data before it's useful.
 
-- Current fat and protein percentages are strong indicators
-- Age of the cow affects quality consistency
-- Some breeds produce consistently better-tasting milk
+That's not failure - that's how real projects go. You try something, see what works, and improve from there.
 
 ---
 
-## The Solution
-
-### Dual-Model System
-
-We built two complementary models that work together:
-
-**Model 1: Yield Prediction (Regression)**
-
-| Metric | Value |
-|--------|-------|
-| Accuracy (R²) | 83% |
-| Average Error (RMSE) | 188 kg |
-| Confidence Interval | ±65 kg |
-
-For a cow predicted to yield 6,500 kg, actual yield will likely fall between 6,435 and 6,565 kg.
-
-**Model 2: Quality Prediction (Classification)**
-
-| Metric | Value |
-|--------|-------|
-| Precision | 92% |
-| False Positive Rate | 8% |
-
-When the model predicts "tasty milk," it is correct 92% of the time. This high precision minimizes the risk of purchasing cows with quality issues.
-
-### Selection Process
-
-A cow is recommended for purchase only if it passes BOTH criteria:
-
-1. Predicted annual yield ≥ 6,000 kg (with 95% confidence)
-2. Probability of tasty milk exceeds the precision-optimized threshold
-
----
-
-## Business Recommendations
-
-### Immediate Actions
-
-**1. Implement Selection Protocol**
-- Use the model to score all purchase candidates
-- Require both yield and quality thresholds to be met
-- Document predictions vs. actual outcomes for model refinement
-
-**2. Prioritize Key Factors**
-- Request breeding history (cow and father breed)
-- Verify feed nutrition data from sellers
-- Consider pasture conditions at the source farm
-
-**3. Risk Management**
-- For borderline cases, request additional data
-- Consider trial periods for high-value purchases
-- Maintain records to validate predictions
-
-### Strategic Initiatives
-
-**Breeding Program Optimization**
-- Use model insights to guide breeding decisions
-- Select fathers with proven genetic performance
-- Track offspring outcomes to improve predictions
-
-**Feed Management**
-- Optimize feed composition based on model findings
-- Monitor protein and energy levels
-- Adjust nutrition for maximum yield
-
-**Herd Diversification**
-- Balance breeds for risk mitigation
-- Consider pasture variety effects
-- Plan for seasonal variations
-
----
-
-## Implementation Guide
-
-### Phase 1: Pilot
-
-1. Apply model to next 10 purchase candidates
-2. Track predictions vs. actual first-year performance
-3. Refine thresholds based on results
-
-### Phase 2: Integration
-
-1. Train farm staff on using predictions
-2. Integrate with existing record-keeping
-3. Establish feedback loops for model updates
-
-### Phase 3: Expansion
-
-1. Apply to breeding decisions
-2. Extend predictions to multi-year forecasts
-3. Consider additional quality metrics
-
----
-
-## Expected Impact
-
-**Risk Reduction**
-- 83% fewer underperforming purchases (yield)
-- 92% fewer quality issues identified early
-
-**Economic Benefits**
-- Avoid purchasing cows producing <6,000 kg
-- Reduce quality-related losses
-- Optimize herd composition
-
-**Operational Improvement**
-- Objective decision framework
-- Reduced reliance on subjective assessment
-- Data-driven breeding strategy
-
----
-
-## Technical Notes
-
-The yield prediction model uses Gradient Boosting Regression with features including breed, father's breed, feed nutrition, and pasture type. The quality model uses Logistic Regression with threshold optimization for high precision.
-
-Both models were validated on held-out test data and demonstrate stable performance across different cow subgroups.
-
----
-
-*Report prepared by: Arina Fedorova, Data Scientist*
-*Analysis based on: Herd data, breeding records, and purchase candidates*
-*Model validation: 25% holdout test set*
+*Arina Fedorova*

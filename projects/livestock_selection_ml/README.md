@@ -1,15 +1,14 @@
 # Livestock Selection ML (Regression + Classification)
 
-> Dual-model system for data-driven cow selection: predicting milk yield and quality to minimize purchasing risks.
+> Dual-model system for data-driven cow selection: predicting milk quality and yield to minimize purchasing risks.
 
 ## Quick Results
 
-| Task | Metric | Value | Target |
-|------|--------|-------|--------|
-| Milk Yield | R² | 0.83 | High accuracy |
-| Milk Yield | RMSE | 188 kg | Low error |
-| Milk Quality | Precision | 0.92 | Minimize false positives |
-| Selection | Cows Selected | Based on both criteria | ≥6000 kg + tasty |
+| Task | Model | Status | Notes |
+|------|-------|--------|-------|
+| Milk Quality | Logistic Regression | Ready | Precision-optimized |
+| Milk Yield | Gradient Boosting | Needs work | Negative R² on test |
+| Selection | Quality-based | Operational | Manual yield assessment |
 
 ## Problem Statement
 
@@ -17,22 +16,22 @@ A dairy farm needs to make objective purchasing decisions when selecting new cow
 
 ## Solution
 
-Built a dual-model ML system:
-1. **Regression model** predicts annual milk yield with R² = 0.83
-2. **Classification model** predicts milk taste with 92% precision
+Built a dual-model ML system with mixed results:
+1. **Classification model** predicts milk taste successfully
+2. **Regression model** requires additional feature engineering
 
-Together, these models identify cows meeting both criteria: minimum 6,000 kg annual yield AND tasty milk.
+The quality model enables selection based on taste prediction, while yield assessment remains manual pending model improvement.
 
 ## Key Findings
 
-- Cow breed and father's breed are strong predictors of milk yield
-- Feed nutrition (protein, energy) significantly impacts production
-- Pasture type affects both yield and milk quality
-- Age and current fat/protein content inform quality predictions
+- Milk taste can be predicted from fat content, protein content, and breed
+- Simple features are insufficient for accurate yield prediction
+- Feature engineering and breed genetics data would improve yield model
+- The quality classification threshold can be tuned for precision vs recall
 
 ## Tech Stack
 
-`Python` `Pandas` `Scikit-learn` `Statsmodels` `Matplotlib` `Seaborn`
+`Python` `Pandas` `Scikit-learn` `Matplotlib` `Seaborn`
 
 ## Quick Start
 
@@ -83,40 +82,42 @@ livestock_selection_ml/
 
 ### Approach
 
-1. **Data Integration** — Merge herd, father, and purchase datasets
-2. **EDA** — Analyze distributions, correlations, breed effects
-3. **Feature Engineering** — Encode categoricals, handle multicollinearity
-4. **Regression Model** — Predict annual milk yield
-5. **Classification Model** — Predict milk taste probability
-6. **Selection System** — Apply both models to purchase candidates
+1. **Data Integration** - Merge herd and father datasets
+2. **EDA** - Analyze distributions, correlations, breed effects
+3. **Feature Engineering** - Encode categoricals, handle outliers
+4. **Regression Model** - Attempt to predict annual milk yield
+5. **Classification Model** - Predict milk taste probability
+6. **Selection System** - Quality-based selection with manual yield check
 
 ### Models
 
 **Regression (Milk Yield):**
 
-| Model | R² (Test) | RMSE | Notes |
-|-------|-----------|------|-------|
-| Linear Regression | 0.75 | 227 kg | Baseline |
-| Ridge Regression | 0.79 | 205 kg | Regularized |
-| Gradient Boosting | 0.83 | 188 kg | **Best** |
+Current models show poor generalization (negative test R²). Additional work needed:
+- Outlier removal (filter extreme yield values)
+- Feature engineering (squared terms, interactions)
+- Breed genetics integration
 
 **Classification (Milk Quality):**
 
-| Threshold | Precision | Recall | Notes |
-|-----------|-----------|--------|-------|
-| 0.60 | 0.71 | 0.74 | Balanced |
-| 0.79 | 0.92 | 0.12 | High precision |
-| 0.84 | 1.00 | 0.05 | Perfect precision |
+Logistic Regression with threshold optimization for precision.
 
-## Selection Criteria
+## Selection Approach
 
 A cow is recommended for purchase if:
-1. **Predicted yield ≥ 6,000 kg/year** (with 95% confidence)
-2. **Predicted probability of tasty milk > threshold** (precision-optimized)
+1. **Predicted probability of tasty milk > threshold** (quality model)
+2. **Manual yield assessment** based on breed, age, feed history
+
+## Future Improvements
+
+1. Improve regression with better features and outlier handling
+2. Add father's milk production records as predictor
+3. Integrate seasonal and age-specific yield patterns
+4. Test ensemble methods for quality classification
 
 ## Author
 
-**Arina Fedorova** — Data Scientist
+**Arina Fedorova** - Data Scientist
 
 ---
 

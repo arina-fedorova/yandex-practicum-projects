@@ -1,177 +1,72 @@
-# Business Report: Customer Retention Strategy
+# Why Customers Stop Buying (And How to Catch Them Before They Do)
 
-## Executive Summary
+## The Starting Point
 
-We developed a predictive system that identifies customers at risk of reducing their purchasing activity. The model achieves 90.6% accuracy in predicting activity decline, enabling proactive intervention before customers are lost.
+An online store came with a familiar problem: customers were slipping away. Not dramatically - they weren't complaining or making a scene. They just... bought less. Visited less often. Responded to fewer emails. And eventually, they disappeared.
 
-**Bottom Line**: By targeting the right customers with the right message, the company can reduce churn and increase customer lifetime value.
+The question wasn't complicated: can we spot these customers before they're gone?
 
----
+## What the Data Showed
 
-## The Business Problem
+We had four years of customer behavior data. Page views, purchases, time on site, email responses - the usual. About 1,300 customers, enough to work with.
 
-The online store noticed a troubling trend: regular customers were becoming less active. Without intervention, these customers would eventually stop purchasing entirely. The company needed answers to critical questions:
+The first thing we noticed: roughly 38% of customers were already showing signs of decline. That's not a small leak. That's a problem.
 
-> "Which customers are likely to reduce their activity?"
-> "What drives this behavior?"
-> "How can we retain them?"
+But here's what was interesting. These customers didn't look different from loyal ones when they first signed up. Same demographics, same initial behavior. The difference showed up in how they engaged over time.
 
----
+**The warning signs:**
 
-## What We Discovered
+1. **Fewer pages per visit.** This was the biggest tell. Customers who used to browse 10-15 pages per session started looking at 3-4. They came, grabbed what they needed, and left. No exploring, no discovering new products.
 
-### Who Is At Risk?
+2. **Ignoring marketing emails.** Open rates dropped. Click-through rates dropped further. The relationship was going cold.
 
-Our analysis of customer behavior data revealed that approximately 35-42% of customers across all segments show signs of declining activity. The key warning signs include:
+3. **Longer gaps between visits.** Weekly shoppers became monthly shoppers. Monthly shoppers became "maybe next quarter" shoppers.
 
-**Engagement Metrics**
-- Fewer pages viewed per session
-- Reduced response to marketing communications
-- Shorter time spent on the website
+4. **Smaller carts.** Not necessarily less money per visit, but fewer items considered. Less time spent deciding.
 
-**Purchase Patterns**
-- Declining number of items in cart
-- Longer gaps between purchases
-- Reduced spending on promotional items
+## The Model
 
-### Three Customer Profiles
+We tested several approaches. Support Vector Classifier won - F1 score of 0.91 on held-out data, which means it catches most at-risk customers without flagging too many false positives.
 
-We identified three distinct customer segments, each requiring a different approach:
+The model looks at engagement patterns, purchase history, and response to marketing. It outputs a risk score. High score means this customer is heading for the exit.
 
-**Segment 1: The Disengaged (35% at risk)**
-- Highest overall engagement historically
-- Recently reducing website interaction
-- Most responsive to personalized offers
-- **Strategy**: Re-engagement campaigns with exclusive deals
+## Three Types of At-Risk Customers
 
-**Segment 2: The Quiet Ones (42% at risk)**
-- Moderate historical engagement
-- Steady decline in activity
-- Price-sensitive behavior
-- **Strategy**: Value-focused messaging and loyalty rewards
+Clustering revealed something useful: not all declining customers are the same.
 
-**Segment 3: The Browsers (40% at risk)**
-- High browsing, low conversion
-- Interested but not buying
-- Cart abandonment issues
-- **Strategy**: Conversion optimization and checkout incentives
+**Group 1: The Burned Out**
+These were once your best customers. High engagement, frequent purchases. Now they're tired. Maybe too many emails. Maybe they bought everything they needed. They're not angry - just done.
 
----
+*What works:* Give them space. Reduce email frequency. When you do reach out, make it count - exclusive access, early previews, something that says "we remember you're special."
 
-## The Solution
+**Group 2: The Price Shoppers**
+They came for deals and stayed for deals. When the deals dried up, so did their interest. Moderate engagement, highly sensitive to price.
 
-### Predictive Model
+*What works:* Loyalty discounts. Bundle offers. Free shipping thresholds that feel achievable. Don't try to make them love your brand - just make the math work.
 
-We built a machine learning model that scores each customer's likelihood of reducing activity:
+**Group 3: The Almost-Buyers**
+High browsing, low conversion. They look, they compare, they leave. Cart abandonment is their specialty.
 
-| Metric | Result |
-|--------|--------|
-| Prediction Accuracy (F1) | 90.6% |
-| Improvement vs Baseline | +91% |
-| False Positive Rate | Low |
+*What works:* Simplify checkout. Send abandoned cart reminders (but don't be creepy about it). Time-limited discounts on items they viewed.
 
-The model analyzes customer behavior patterns and flags those showing early warning signs of disengagement.
+## What To Do With This
 
-### Key Predictors
+**Short term:**
+- Run the model weekly. Flag customers with risk scores above threshold.
+- Match flagged customers to their segment. Send the right message to the right group.
+- Track who comes back. Learn what works.
 
-The most important factors in predicting activity decline:
+**Longer term:**
+- Fix the page views problem. If customers aren't exploring, maybe the site isn't inviting exploration. That's a UX issue, not a marketing issue.
+- Rethink email frequency. More isn't better. Relevant is better.
+- Build in feedback loops. The model will drift as customer behavior changes. Retrain it.
 
-1. **Average pages per session** — Declining engagement
-2. **Marketing response rate** — Reduced interest in communications
-3. **Session duration** — Less time spent browsing
-4. **Cart activity** — Fewer items being considered
-5. **Service type preferences** — Changing needs
+## The Honest Assessment
+
+This model catches patterns, not causes. It can tell you who's leaving, but not always why. A customer might be flagged as high-risk because they got a new job and have less time to browse - no amount of marketing will change that.
+
+Use the predictions as a starting point, not a verdict. The segments are guides, not scripts. Test what works with your actual customers.
 
 ---
 
-## Business Recommendations
-
-### Immediate Actions
-
-**1. Implement Early Warning System**
-- Deploy the predictive model to score customers weekly
-- Flag high-risk customers for immediate intervention
-- Track intervention success rates
-
-**2. Segment-Specific Campaigns**
-
-*For Segment 1 (Disengaged):*
-- Personalized "We miss you" emails
-- Exclusive member-only discounts
-- Early access to new products
-
-*For Segment 2 (Quiet Ones):*
-- Loyalty program enrollment incentives
-- Bundle deals and value packs
-- Free shipping thresholds
-
-*For Segment 3 (Browsers):*
-- Cart abandonment recovery emails
-- Limited-time offers
-- Simplified checkout process
-
-**3. Engagement Monitoring**
-- Track page views per session as leading indicator
-- Monitor marketing email open rates
-- Set alerts for significant activity drops
-
-### Strategic Initiatives
-
-**Customer Experience**
-- Improve website navigation to increase pages per session
-- Personalize product recommendations
-- Streamline the purchase journey
-
-**Communication Strategy**
-- Optimize email frequency to prevent fatigue
-- A/B test message content and timing
-- Implement triggered behavioral emails
-
-**Loyalty Program**
-- Reward consistent engagement, not just purchases
-- Create tiered benefits to encourage progression
-- Offer points for non-purchase activities (reviews, referrals)
-
----
-
-## Implementation Roadmap
-
-### Phase 1: Quick Wins
-- Deploy predictive scoring
-- Launch segment-specific email campaigns
-- Implement cart abandonment recovery
-
-### Phase 2: Optimization
-- A/B test intervention strategies
-- Refine model with new behavioral data
-- Expand personalization capabilities
-
-### Phase 3: Scale
-- Automate intervention workflows
-- Integrate predictions into CRM
-- Build real-time scoring pipeline
-
----
-
-## Expected Impact
-
-Based on industry benchmarks and our model's accuracy:
-
-- **Churn Reduction**: 15-25% decrease in customer activity decline
-- **Revenue Protection**: Retained customers continue purchasing
-- **Marketing Efficiency**: Targeted campaigns reduce wasted spend
-- **Customer Lifetime Value**: Extended relationship duration
-
----
-
-## Technical Notes
-
-The predictive model uses Support Vector Classification (SVC) trained on behavioral, transactional, and engagement features. SHAP analysis provides interpretable feature importance, enabling business users to understand why specific customers are flagged.
-
-Customer segmentation uses K-Means clustering on communication and engagement metrics, creating actionable groups for targeted marketing.
-
----
-
-*Report prepared by: Arina Fedorova, Data Scientist*
-*Analysis based on: Customer behavior, revenue, and engagement data*
-*Model validation: 25% holdout test set*
+*Arina Fedorova*
