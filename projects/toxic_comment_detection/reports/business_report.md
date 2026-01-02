@@ -1,171 +1,176 @@
-# Business Report: Automated Comment Moderation System
+# Catching Toxic Comments Before They Poison the Discussion
+## Business Intelligence Report
+
+**Author:** Arina Fedorova
+**Data Source:** E-commerce Platform Comments
+**Analysis:** 159,292 user comments
+
+---
 
 ## Executive Summary
 
-We developed an automated system that detects toxic comments before they are published on the platform. The system correctly identifies 78% of toxic content while maintaining high overall accuracy (96%), enabling efficient moderation at scale.
+An e-commerce platform asked us to build an automated filter for toxic comments. Manual moderation couldn't keep up with volume, and toxic content was damaging community trust.
 
-**Bottom Line**: The model flags toxic comments for human review, reducing the burden on moderators while protecting the community from harmful content.
+We built a classifier that catches 67% of toxic comments with 92% precision - meaning when it flags something, it's almost always right. The model can be tuned to catch more (76% at lower precision), depending on moderation capacity.
 
----
-
-## The Business Problem
-
-User-generated content is valuable but risky. As the platform grows, manual moderation becomes impractical:
-
-- Comment volume exceeds human capacity
-- Toxic content damages community trust
-- Delayed moderation allows harm to spread
-
-The platform needed an automated first line of defense:
-
-> "Which comments require immediate moderation?"
+### Key Numbers
+- **F1 Score**: 0.78 (target was ≥0.75)
+- **Precision**: 92% (few false alarms)
+- **Recall**: 67% (catches 2/3 of toxic content)
+- **Dataset**: 159,292 comments, 10% toxic
 
 ---
 
-## What We Discovered
+## The Data Problem
 
-### The Nature of Toxic Comments
+### Class Imbalance
 
-Our analysis of 160,000+ comments revealed:
+![Class Distribution](images/class_distribution.png)
+*Figure 1: Only 10% of comments are toxic - significant class imbalance*
 
-**Volume**
-- Approximately 10% of comments are toxic
-- This represents thousands of potentially harmful posts daily
+The first thing we noticed: toxic comments are rare. Only 10.16% of the dataset (16,186 out of 159,292) was labeled toxic. This imbalance matters:
 
-**Characteristics**
-- Toxic comments are not significantly longer or shorter
-- Toxicity is determined by word choice, not length
-- Certain word patterns strongly indicate toxic content
+- Accuracy is misleading (a model that says "not toxic" every time gets 90% accuracy)
+- F1 score is the right metric - it balances precision and recall
+- The model must learn from limited toxic examples
 
-**Patterns**
-- Personal attacks and insults are common markers
-- Aggressive language shows clear patterns
-- Context matters less than specific vocabulary
+### Text Length Doesn't Help
 
----
+![Text Length Analysis](images/text_length.png)
+*Figure 2: Toxic and normal comments have similar length distributions*
 
-## The Solution
+We hoped toxic comments might be shorter (angry outbursts) or longer (sustained attacks). They're not. Both classes show nearly identical length distributions.
 
-### How It Works
-
-1. **New comment submitted** → Text preprocessing
-2. **Feature extraction** → TF-IDF vectorization
-3. **Classification** → Model predicts toxicity probability
-4. **Threshold check** → High-probability comments flagged
-
-### Performance
-
-| What It Means | Metric | Value |
-|---------------|--------|-------|
-| Toxic caught | Recall | 75% |
-| Correct flags | Precision | 81% |
-| Overall accuracy | Accuracy | 96% |
-| Balanced score | F1 | 0.78 |
-
-**In practical terms:**
-- 75% of toxic comments are caught automatically
-- 81% of flagged comments are actually toxic
-- Moderators review a focused queue instead of all content
+This means we can't take shortcuts. The model must understand content, not just count characters.
 
 ---
 
-## Business Recommendations
+## What Makes a Comment Toxic
 
-### Implementation Strategy
+The model learned to recognize toxic patterns through TF-IDF features - words and phrases weighted by how distinctive they are.
 
-**Phase 1: Shadow Mode**
-- Run the model on all comments without blocking
-- Build a dataset of model predictions vs. human decisions
-- Validate performance in production environment
+**Strongest toxic indicators:**
+| Word | Weight |
+|------|--------|
+| fuck | 21.3 |
+| fucking | 19.2 |
+| shit | 17.2 |
+| idiot | 16.5 |
+| stupid | 14.7 |
 
-**Phase 2: Assisted Moderation**
-- Flag high-probability toxic comments for priority review
-- Allow moderators to provide feedback for model improvement
-- Track moderation time savings
+**Strongest normal indicators:**
+| Word | Weight |
+|------|--------|
+| talk | -3.6 |
+| best | -3.5 |
+| thanks | -3.3 |
+| thank you | -3.0 |
+| help | -2.4 |
 
-**Phase 3: Automated Action**
-- Auto-hold comments above very high threshold (e.g., 0.95)
-- Send for human review before publication
-- Maintain appeals process
-
-### Threshold Configuration
-
-The model outputs probability scores (0-1). Configure actions based on risk tolerance:
-
-| Probability | Recommended Action |
-|-------------|-------------------|
-| < 0.5 | Auto-approve |
-| 0.5 - 0.8 | Human review within 24h |
-| 0.8 - 0.95 | Priority review within 1h |
-| > 0.95 | Auto-hold pending review |
-
-### Handling Edge Cases
-
-**False Positives (Normal comments flagged as toxic):**
-- Implement easy appeals process
-- User notification with explanation
-- Fast-track human review
-
-**False Negatives (Toxic comments missed):**
-- User reporting mechanism
-- Regular model retraining
-- Human spot-checking of approved content
+No surprises here. Explicit profanity and insults signal toxicity. Polite, constructive language signals normal discussion. The model captures what humans intuitively know.
 
 ---
 
-## Expected Impact
+## Model Performance
 
-### Moderation Efficiency
+We tested three approaches:
 
-- **75% reduction** in toxic content reaching users
-- **Focused queue** of likely-toxic comments for moderators
-- **Faster response** to genuinely harmful content
+| Model | F1 Score |
+|-------|----------|
+| Logistic Regression | 0.758 |
+| Random Forest | 0.738 |
+| Naive Bayes | 0.693 |
 
-### Community Health
+Logistic Regression won - simple, fast, interpretable. After tuning (C=2.0), final performance:
 
-- Cleaner discussion environment
-- Better user experience
-- Increased trust in platform
+![Confusion Matrix](images/confusion_matrix.png)
+*Figure 3: Model predictions vs actual labels*
 
-### Resource Optimization
+**Breaking down the confusion matrix:**
+- **28,431 True Negatives**: Normal comments correctly approved
+- **191 False Positives**: Normal comments incorrectly flagged (0.7% of normal)
+- **2,175 True Positives**: Toxic comments correctly caught
+- **1,062 False Negatives**: Toxic comments that slipped through (33% of toxic)
 
-- Moderators focus on difficult cases
-- Reduced exposure to harmful content
-- Scalable as community grows
-
----
-
-## Technical Considerations
-
-### Model Maintenance
-
-- Retrain quarterly with new labeled data
-- Monitor for concept drift (changing language patterns)
-- Track precision/recall over time
-
-### Infrastructure
-
-- Model inference: ~10ms per comment
-- Batch processing for historical analysis
-- API endpoint for real-time classification
-
-### Limitations
-
-- Context-dependent toxicity may be missed
-- Sarcasm and irony are challenging
-- New slang requires model updates
+The model is conservative - it rarely flags innocent comments, but it misses about a third of toxic content.
 
 ---
 
-## Future Enhancements
+## The Threshold Trade-off
 
-1. **Multi-language support** — Extend to other markets
-2. **Severity levels** — Categorize type of toxicity
-3. **User reputation** — Consider author history
-4. **BERT integration** — Deep learning for context understanding
+![Threshold Optimization](images/threshold_optimization.png)
+*Figure 4: Precision vs Recall at different classification thresholds*
+
+The default threshold (0.5) maximizes precision at 92%. But we can adjust:
+
+| Threshold | Precision | Recall | F1 |
+|-----------|-----------|--------|-----|
+| 0.50 | 92% | 67% | 0.78 |
+| 0.30 | 83% | 76% | 0.79 |
+
+**At threshold 0.30:**
+- Catch 76% of toxic comments (vs 67%)
+- But 17% of flags are false alarms (vs 8%)
+
+The right choice depends on moderation capacity. More moderators? Lower threshold. Overwhelmed team? Keep it at 0.5.
 
 ---
 
-*Report prepared by: Arina Fedorova, Data Scientist*
-*Analysis based on: 160,000+ user comments*
-*Model validation: 20% holdout test set*
+## What This Means for the Platform
+
+### Two Operating Modes
+
+**High Precision Mode (threshold 0.5)**
+- Use when: Moderation team is small
+- Result: Fewer false alarms, but 33% of toxic comments get through
+- User impact: Some toxic content visible before manual review catches it
+
+**Balanced Mode (threshold 0.3)**
+- Use when: Moderation capacity exists
+- Result: Catches 76% of toxic, but more false alarms
+- User impact: Cleaner discussions, but some frustrated users wrongly flagged
+
+### What the Model Can't Do
+
+1. **Context-dependent toxicity**: "You're killing it!" is praise, not a threat
+2. **Sarcasm**: "Oh great, another brilliant idea" reads as positive
+3. **New slang**: Novel insults won't be caught until retraining
+4. **Non-English content**: Model is English-only
+
+These gaps require human moderators. The model is a first filter, not a replacement.
+
+---
+
+## Recommendations
+
+### Immediate Deployment
+
+1. **Start with threshold 0.5** - minimize disruption from false positives
+2. **Route flagged comments to human review** - don't auto-delete
+3. **Track false positive complaints** - users will tell you when they're wrongly flagged
+
+### Ongoing Improvement
+
+1. **Collect moderator feedback** - which flags were wrong?
+2. **Retrain quarterly** - language evolves
+3. **Monitor recall** - are toxic comments still getting through?
+
+### Future Development
+
+1. **Severity levels** - distinguish "mildly rude" from "hate speech"
+2. **User history** - repeat offenders vs first-time mistakes
+3. **BERT upgrade** - deep learning for context understanding
+
+---
+
+## Technical Notes
+
+- **Model**: Logistic Regression (C=2.0)
+- **Features**: TF-IDF with 10,000 vocabulary, 1-2 ngrams
+- **Training**: 127,433 comments
+- **Validation**: 31,859 comments (20% holdout, stratified)
+- **Inference**: ~10ms per comment
+
+---
+
+*Arina Fedorova*
