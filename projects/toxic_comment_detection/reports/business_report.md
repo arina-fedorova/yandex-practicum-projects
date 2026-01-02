@@ -36,7 +36,7 @@ The first thing we noticed: toxic comments are rare. Only 10.16% of the dataset 
 
 ### Text Length Doesn't Help
 
-![Text Length Analysis](images/length_disribution.png)
+![Text Length Analysis](images/length_distribution.png)
 *Figure 2: Toxic and normal comments have similar length distributions*
 
 We hoped toxic comments might be shorter (angry outbursts) or longer (sustained attacks). They're not. Both classes show nearly identical length distributions.
@@ -46,6 +46,15 @@ This means we can't take shortcuts. The model must understand content, not just 
 ---
 
 ## What Makes a Comment Toxic
+
+### The Visual Difference
+
+![Word Clouds](images/wordclouds.png)
+*Figure 3: Word clouds reveal stark lexical differences between toxic (left) and normal (right) comments*
+
+The word clouds tell the story immediately. Toxic comments are dominated by profanity, slurs, and insults - words that jump out even at a glance. Normal comments show collaborative vocabulary: "article," "page," "edit," "please," "thanks."
+
+This visual separation is why the model works. The two classes live in different linguistic worlds.
 
 The model learned to recognize toxic patterns through TF-IDF features - words and phrases weighted by how distinctive they are.
 
@@ -84,7 +93,7 @@ We tested three approaches:
 Logistic Regression won - simple, fast, interpretable. After tuning (C=2.0), final performance:
 
 ![Confusion Matrix](images/confusion_matrix.png)
-*Figure 3: Model predictions vs actual labels*
+*Figure 4: Model predictions vs actual labels*
 
 **Breaking down the confusion matrix:**
 - **28,431 True Negatives**: Normal comments correctly approved
@@ -99,7 +108,7 @@ The model is conservative - it rarely flags innocent comments, but it misses abo
 ## The Threshold Trade-off
 
 ![Threshold Optimization](images/threshold_optimization.png)
-*Figure 4: Precision vs Recall at different classification thresholds*
+*Figure 5: Precision vs Recall at different classification thresholds*
 
 The default threshold (0.5) maximizes precision at 92%. But we can adjust:
 
@@ -167,8 +176,10 @@ These gaps require human moderators. The model is a first filter, not a replacem
 
 - **Model**: Logistic Regression (C=2.0)
 - **Features**: TF-IDF with 10,000 vocabulary, 1-2 ngrams
-- **Training**: 127,433 comments
-- **Validation**: 31,859 comments (20% holdout, stratified)
+- **Preprocessing**: POS-aware lemmatization, negation preservation
+- **Data Filtering**: Comments ≤2000 chars (removes spam/repetitive content)
+- **Training**: ~125,000 comments (after filtering)
+- **Validation**: 20% holdout, stratified
 - **Inference**: ~10ms per comment
 
 ---
