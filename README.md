@@ -16,7 +16,7 @@ A collection of data science projects completed during the Yandex Practicum Data
 
 | # | Project Name | Description | Status | Technologies |
 |---|--------------|-------------|---------|--------------|
-| 01 | [Project Template](./projects/01_project_template) | Template for new projects | 🟡 Template | Python, Jupyter |
+| -- | [Project Template](./projects/project_template) | Template for new projects | 🟡 Template | Python, Jupyter |
 | 01 | [Music of Big Cities](./projects/1_music_of_big_cities) | Yandex Music analysis | ✅ Completed | Python, Pandas, Matplotlib |
 | 02 | [Children and Loan](./projects/2_children_and_loan) | Loan reliability research | ✅ Completed | Python, Scikit-learn, Pandas |
 | 06 | [ML Farm](./projects/6_ml_farm) | Cow farm ML modeling | ✅ Completed | Python, ML, Scikit-learn |
@@ -46,9 +46,9 @@ A collection of data science projects completed during the Yandex Practicum Data
 yandex-practicum-projects/
 ├── README.md                    # This file - Project overview
 ├── projects/                    # Individual project directories
-│   ├── 01_project_template/    # Project template
-│   ├── 18_customer_behavior/   # Customer behavior analysis
-│   ├── 22_time_series/         # Time series forecasting
+│   ├── project_template/       # Project template
+│   ├── customer_churn_prediction/
+│   ├── taxi_demand_forecasting/
 │   └── ...                     # Other projects
 ├── docs/                        # Documentation and planning
 │   └── PROJECT_IMPROVEMENT_PLAN.md
