@@ -10,15 +10,15 @@ A collection of data science projects completed during the Yandex Practicum Data
 | [Customer Behavior Analysis](./projects/18_customer_behavior_analysis) | Predicting customer activity decline | Classification, SHAP, segmentation | Actionable recommendations |
 | [Cow Selection ML](./projects/19_cow_selection_ml) | Baseline establishment for livestock | Regression + Classification, multi-objective | Dual-model system |
 | [Toxic Comments Processing](./projects/24_toxic_comments_processing) | NLP text classification | TF-IDF, NLP preprocessing, threshold optimization | F1: 0.778 |
-| [Machine Vision](./projects/29_machine_vision) | Multimodal image-text matching | ResNet50, BERT, ensemble methods | Production pipeline |
+| [Multimodal Image-Text Matching](./projects/multimodal_image_text_matching) | Age prediction using images + text | ResNet50, BERT, ensemble methods | MAE: 5.4 |
 
 ## All Projects Index
 
 | # | Project Name | Description | Status | Technologies |
 |---|--------------|-------------|---------|--------------|
 | -- | [Project Template](./projects/project_template) | Template for new projects | 🟡 Template | Python, Jupyter |
-| 01 | [Music of Big Cities](./projects/1_music_of_big_cities) | Yandex Music analysis | ✅ Completed | Python, Pandas, Matplotlib |
-| 02 | [Children and Loan](./projects/2_children_and_loan) | Loan reliability research | ✅ Completed | Python, Scikit-learn, Pandas |
+| 01 | [Music Preference Analysis](./projects/music_preference_analysis) | Yandex Music behavior patterns | ✅ Completed | Python, Pandas, SciPy |
+| 02 | [Credit Risk Analysis](./projects/credit_risk_analysis) | Credit risk pattern identification | ✅ Completed | Python, SciPy, Pandas |
 | 06 | [ML Farm](./projects/6_ml_farm) | Cow farm ML modeling | ✅ Completed | Python, ML, Scikit-learn |
 | 08 | [ML HR](./projects/8_ml_hr) | HR ML modeling | ✅ Completed | Python, ML, HR Analytics |
 | 09 | [Geo Bootstrap](./projects/9_geo_bootstrap) | Geographic bootstrap analysis | ✅ Completed | Python, Statistics, Bootstrap |
@@ -38,7 +38,7 @@ A collection of data science projects completed during the Yandex Practicum Data
 | 23 | [Text Processing](./projects/23_text_processing) | Text analysis and processing | ✅ Completed | Python, NLP, Text Analytics |
 | 24 | [Toxic Comments Processing](./projects/24_toxic_comments_processing) | Toxic comments ML model | ✅ Completed | Python, ML, NLP, Moderation |
 | 25 | [Scooter Rental Analysis](./projects/25_scooter_rental_analysis) | Scooter rental statistics | ✅ Completed | Python, Statistics, Transportation |
-| 29 | [Machine Vision](./projects/29_machine_vision) | Multimodal image-text matching | ✅ Completed | Python, BERT, ResNet50, XGBoost |
+| 29 | [Multimodal Image-Text Matching](./projects/multimodal_image_text_matching) | Image + text age prediction | ✅ Completed | Python, BERT, ResNet50, XGBoost |
 
 ## Repository Structure
 
@@ -46,10 +46,11 @@ A collection of data science projects completed during the Yandex Practicum Data
 yandex-practicum-projects/
 ├── README.md                    # This file - Project overview
 ├── projects/                    # Individual project directories
-│   ├── project_template/       # Project template
-│   ├── customer_churn_prediction/
-│   ├── taxi_demand_forecasting/
-│   └── ...                     # Other projects
+│   ├── project_template/                  # Project template
+│   ├── music_preference_analysis/         # EDA, Statistical Testing
+│   ├── credit_risk_analysis/              # Statistical Testing, Risk Modeling
+│   ├── multimodal_image_text_matching/    # Computer Vision, BERT, Ensemble
+│   └── ...                                # Other projects
 ├── docs/                        # Documentation and planning
 │   └── PROJECT_IMPROVEMENT_PLAN.md
 ├── common/                      # Shared utilities and templates
@@ -149,9 +150,9 @@ make new-project
 4. Add the project to the index table above
 
 ### Project Naming Convention
-- Use the format: `XX_project_name` (e.g., `01_customer_churn_analysis`)
-- XX = sequential number (01, 02, 03...)
-- project_name = descriptive name in kebab-case
+- Use descriptive `snake_case` names (e.g., `customer_churn_prediction`)
+- No numeric prefixes
+- Skills documented in README title (e.g., `# Project Name (Skill1, Skill2)`)
 - Keep names concise but descriptive
 
 ## 🛠️ Development Workflow

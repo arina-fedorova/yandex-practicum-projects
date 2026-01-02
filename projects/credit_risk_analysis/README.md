@@ -1,4 +1,6 @@
-# Borrower Reliability Research: Credit Risk Analysis
+# Credit Risk Analysis (Statistical Testing, Risk Modeling)
+
+> Identifying credit risk patterns using statistical hypothesis testing on 21,525 borrower records.
 
 ## Project Overview
 
@@ -42,7 +44,7 @@ This project analyzes credit risk factors using a comprehensive dataset of 21,52
 ## Project Structure
 
 ```
-2_borrower_reliability/
+credit_risk_analysis/
 ├── README.md
 ├── borrower_reliability.ipynb
 └── reports/

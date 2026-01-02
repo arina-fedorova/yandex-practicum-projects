@@ -1,4 +1,6 @@
-# Music of Big Cities: Moscow vs. Saint Petersburg Analysis
+# Music Preference Analysis (EDA, Statistical Testing)
+
+> Moscow vs. Saint Petersburg listening patterns on Yandex Music platform.
 
 ## Project Overview
 
@@ -35,7 +37,7 @@ This project analyzes user behavior patterns on Yandex Music platform across Rus
 ## Project Structure
 
 ```
-1_music_of_big_cities/
+music_preference_analysis/
 ├── README.md
 ├── music_of_big_cities.ipynb
 └── reports/
