@@ -18,7 +18,7 @@
 | Phase 0 | ✅ Complete | 1/1 |
 | Phase 1 | ✅ Complete | 3/3 |
 | Phase 2 | ✅ Complete | 4/4 |
-| Phase 3 | ⏳ Pending | 0/5 |
+| Phase 3 | 🔄 In Progress | 1/5 |
 | Phase 4 | ⏳ Pending | 0/7 |
 
 ### Completed Projects
@@ -33,6 +33,7 @@
 | Customer Churn Prediction | `customer_churn_prediction` | ✅ Full refactor with business report |
 | Livestock Selection ML | `livestock_selection_ml` | ✅ Full refactor with business report |
 | Toxic Comment Detection | `toxic_comment_detection` | ✅ Full refactor, word clouds, POS-lemmatization |
+| Scooter Rental Analytics | `scooter_rental_analytics` | ✅ Statistical testing, revenue analysis |
 
 ### Deleted/Merged
 
@@ -172,7 +173,7 @@ Before committing any project:
 | 18 | `22_time_series_prediction` | `taxi_demand_forecasting` | ✅ Done |
 | 19 | `23_text_processing` | `text_sentiment_classification` | ⏳ Pending |
 | 20 | `24_toxic_comments_processing` | ~~`toxic_comment_detection`~~ | 🗑️ DELETED (merged) |
-| 21 | `25_scooter_rental_analysis` | `scooter_rental_analytics` | ⏳ Pending |
+| 21 | `25_scooter_rental_analysis` | `scooter_rental_analytics` | ✅ Done |
 | 22 | `29_machine_vision` | `multimodal_image_text_matching` | ✅ Done |
 
 ### Projects to Delete/Review
@@ -206,10 +207,10 @@ Phase 2: Featured Portfolio Projects ✅ COMPLETE
     ├── livestock_selection_ml ✅
     └── toxic_comment_detection ✅
 
-Phase 3: Secondary Projects ⏳ PENDING
+Phase 3: Secondary Projects 🔄 IN PROGRESS
     ├── russian_cinema_market
     ├── car_price_prediction
-    ├── scooter_rental_analytics
+    ├── scooter_rental_analytics ✅
     ├── oil_well_location_selection
     └── text_sentiment_classification
 
@@ -311,14 +312,16 @@ project_name/
 | Create business report | HIGH | ⏳ |
 | Document model comparison | MEDIUM | ⏳ |
 
-#### scooter_rental_analytics
+#### scooter_rental_analytics ✅ COMPLETE
 
 | Task | Priority | Status |
 |------|----------|--------|
-| Rename folder | HIGH | ⏳ |
-| Create README (EN) | HIGH | ⏳ |
-| Add requirements.txt | HIGH | ⏳ |
-| Create business report | HIGH | ⏳ |
+| Rename folder | HIGH | ✅ |
+| Create README (EN) | HIGH | ✅ |
+| Add requirements.txt | HIGH | ✅ |
+| Create business report | HIGH | ✅ |
+| Translate notebook to English | HIGH | ✅ |
+| Add savefig calls | HIGH | ✅ |
 
 #### oil_well_location_selection
 
