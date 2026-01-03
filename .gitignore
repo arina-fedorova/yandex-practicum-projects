@@ -162,8 +162,9 @@ cython_debug/
 *.npy
 *.npz
 
-# Claude Code
+# Claude/Cursor Code
 .claude/
+.cursor/
 
 # Large files
 *.zip
