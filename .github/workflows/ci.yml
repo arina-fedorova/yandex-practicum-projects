@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
 
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         
     - name: Cache pip dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -59,7 +59,7 @@ jobs:
         pytest tests/ -v --cov=common --cov-report=xml
         
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./coverage.xml
         flags: unittests
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
         
     steps:
     - uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
         bandit -r . -f json -o bandit-report.json || true
         
     - name: Upload security report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-report
         path: bandit-report.json
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
         
     steps:
     - uses: actions/checkout@v4
@@ -131,7 +131,7 @@ jobs:
     needs: [test, security, notebook-check]
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
         
     steps:
     - uses: actions/checkout@v4
@@ -151,7 +151,7 @@ jobs:
       run: python -m build
         
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist/
