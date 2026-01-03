@@ -159,6 +159,12 @@ cython_debug/
 *.pb
 *.tflite
 *.mlmodel
+*.npy
+*.npz
+
+# Claude/Cursor Code
+.claude/
+.cursor/
 
 # Large files
 *.zip
@@ -190,6 +196,7 @@ logs/
 models/
 checkpoints/
 artifacts/
+catboost_info/
 
 # Data directories
 data/
