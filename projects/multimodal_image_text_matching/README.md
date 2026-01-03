@@ -1,101 +1,95 @@
-# Multimodal Image-Text Matching (Computer Vision, BERT, Ensemble)
+# Multimodal Image-Text Matching
 
-> Combining visual and textual features using ResNet50 and BERT for age prediction.
+Predicting the probability that an image matches a given text description using ResNet50 and BERT embeddings.
 
 ## Quick Results
 
-| Metric | Value | Target |
-|--------|-------|--------|
-| MAE (Ensemble) | 5.4 | ≤6.0 |
-| Best Model | XGBoost | - |
-| Dataset Size | 7,591 images | - |
+| Metric | Value |
+|--------|-------|
+| Best Model | XGBoost |
+| Test MAE | 0.18 |
+| Test R² | 0.24 |
+| Training Pairs | 4,161 |
+| Image Features | 300-dim (ResNet50 + PCA) |
+| Text Features | 100-dim (BERT + PCA) |
 
 ## Problem Statement
 
-Build a multimodal model that predicts age categories using both image and text features. The challenge involves processing images through computer vision models and text through NLP models, then combining these modalities effectively.
+Build a multimodal model to predict image-text correspondence probability:
+1. Given an image and text description
+2. Predict probability (0-1) that they match
+3. Handle legal restrictions on child content
+4. Enable image search by text query
+
+### Business Context
+
+A search service needs to match images with text queries while complying with child protection laws. The model should:
+- Predict match probability for any image-text pair
+- Filter content containing children
+- Support real-time image search
 
 ## Solution
 
-Combined visual features from ResNet50 with textual embeddings from BERT to create a unified feature representation. Applied PCA for dimensionality reduction and trained ensemble models (XGBoost, RandomForest, MLP, Ridge) to achieve robust predictions.
+### Data Pipeline
+1. **Expert Annotations** — 3 specialists rated each image-text pair (1-4 scale)
+2. **Crowdsourcing** — Workers voted on match/no-match
+3. **Target Variable** — Weighted combination (60% expert + 40% crowd)
+
+### Feature Engineering
+- **Images**: ResNet50 pretrained on ImageNet → 2048-dim → PCA to 300-dim
+- **Text**: BERT (bert-base-uncased) → 768-dim → PCA to 100-dim
+- **Combined**: 400-dimensional feature vectors
+
+### Model Training
+- **Split**: GroupShuffleSplit by image (80/20) to prevent data leakage
+- **Scaling**: StandardScaler fitted only on training data
+- **Models**: Ridge, Random Forest, XGBoost, MLP
 
 ## Key Findings
 
-- ResNet50 features capture visual patterns effectively (2048 dimensions)
-- BERT embeddings provide complementary textual information (768 dimensions)
-- XGBoost performs best with combined modalities
-- Ensemble approach improves robustness across different data types
-
-## Tech Stack
-
-`Python` `PyTorch` `Transformers (BERT)` `ResNet50` `XGBoost` `Scikit-learn` `NumPy` `Pandas`
-
-## Quick Start
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run analysis
-jupyter notebook machine_vision_final.ipynb
-```
+1. **Child Content**: 28.5% of data filtered per legal requirements
+2. **Expert Agreement**: All 3 experts tended toward low scores (avg 1.44-1.88)
+3. **XGBoost Best**: Outperformed other models on combined features
+4. **BERT Superior**: 87.75% explained variance vs 54.10% for TF-IDF
 
 ## Project Structure
 
 ```
 multimodal_image_text_matching/
-├── README.md                     # This file
-├── requirements.txt              # Project dependencies
-├── machine_vision_final.ipynb    # Main analysis notebook
-├── machine-vision.ipynb          # Alternative notebook version
-└── *.pkl                         # Trained model artifacts (gitignored)
+├── machine-vision.ipynb    # Main analysis
+├── README.md
+├── requirements.txt
+└── reports/
+    └── business_report.md
 ```
 
-## Methodology
+## Tech Stack
 
-### Data
+- **Python 3.8+**
+- **TensorFlow/Keras** — ResNet50 feature extraction
+- **Transformers** — BERT embeddings
+- **scikit-learn** — ML models, PCA, scaling
+- **XGBoost** — Gradient boosting
+- **pandas, numpy** — Data manipulation
+- **matplotlib, seaborn** — Visualization
 
-| Aspect | Description |
-|--------|-------------|
-| Source | Image-text pairs dataset |
-| Size | 7,591 records |
-| Modalities | Images (visual) + Descriptions (text) |
-| Target | Age category prediction |
+## Usage
 
-### Approach
+```python
+# Search for image by text query
+results = search_image_by_text("a cat sitting on a couch")
+# Returns: [("image_001.jpg", 0.85), ("image_042.jpg", 0.72), ...]
+```
 
-1. **Image Feature Extraction** — ResNet50 pretrained on ImageNet
-2. **Text Vectorization** — BERT transformer model (bert-base-uncased)
-3. **Dimensionality Reduction** — PCA for feature compression
-4. **Model Training** — Ensemble of XGBoost, RandomForest, MLP, Ridge
-5. **Evaluation** — MAE for regression, cross-validation
+## Legal Compliance
 
-### Models Compared
+The model filters content with child-related keywords:
+- child, children, kid, baby, toddler
+- boy, girl, teen, school, playground
 
-| Model | MAE | Notes |
-|-------|-----|-------|
-| Ridge | 6.2 | Simple baseline |
-| RandomForest | 5.8 | Tree-based ensemble |
-| XGBoost | 5.4 | Gradient boosting |
-| MLP | 5.6 | Neural network |
-
-## Feature Engineering
-
-### Visual Features
-- **ResNet50** — 2048-dimensional feature vectors
-- **PCA Reduction** — Compressed to 256 components
-
-### Text Features
-- **BERT Embeddings** — 768-dimensional vectors
-- **SVD Reduction** — Compressed to 64 components
-
-### Combined Features
-- Concatenated visual + text vectors
-- Standard scaling applied
+When detected, returns:
+> "This image is unavailable in your country in compliance with local laws"
 
 ## Author
 
-**Arina Fedorova** — Data Scientist
-
----
-
-*Educational project | Yandex Practicum Data Science Program*
+**Arina Fedorova** — [GitHub](https://github.com/ArinaKorshunova)
